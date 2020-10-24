@@ -265,7 +265,13 @@ static void constructChar(SAP_Char_t *sapChar, BLE_Char *bleChar)
   {
     sapChar->pFormat   = NULL;
   }
-  sapChar->pShortUUID  = NULL;
+  
+  sapChar->pShortUUID = (SAP_ShortUUID_t *) malloc(sizeof(*sapChar->pShortUUID));
+  sapChar->pShortUUID->perms   = (uint8_t)0x03;
+  sapChar->pShortUUID->maxLen  = (uint16_t)0x00FF;
+  sapChar->pShortUUID->UUID[0] = (uint8_t)0x08;
+  sapChar->pShortUUID->UUID[1] = (uint8_t)0x29;
+	
   sapChar->pLongUUID   = NULL;
 }
 
@@ -293,6 +299,7 @@ static uint8_t serviceReadAttrCB(void *context,
   uint8_t status = SNP_SUCCESS;
   logAcquire();
   logChar("Client reading");
+  logParam("Handle", charHdl);
   BLE_Char *bleChar = getChar(charHdl);
   if (bleChar == NULL)
   {
