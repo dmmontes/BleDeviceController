@@ -1,4 +1,3 @@
-
 #include <BLE.h>
 
 /* HID Class Report Descriptor */
@@ -42,7 +41,7 @@
 #define MOUSE_MIDDLE 4
 #define MOUSE_BACK 8
 #define MOUSE_FORWARD 16
-#define MOUSE_ALL (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE) # For compatibility with the Mouse library
+#define MOUSE_ALL (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE) 
 
 
 /* State Variables for Button Chars */
@@ -54,68 +53,29 @@ uint8_t button2State = 1;
 uint8_t button1Pin = 33;
 uint8_t button2Pin = 32;
 
-/* Declare Simple LED Service Characteristics here */
-
-
-BLE_Char button1Char =
-{
-  {0x01, 0xFF},
-  BLE_NOTIFIABLE,
-  "Button 1 State"
-};
-
-BLE_Char button2Char =
-{
-  {0x02, 0xFF},
-  BLE_NOTIFIABLE,
-  "Button 2 State"
-};
-
-/* BLE LED Service is made up of LED Chars */
-BLE_Char *simpleButtonServiceChars[] = {&button1Char, &button2Char};
-
-/* LED Service Declaration */
-BLE_Service simpleButtonService =
-{
-  {0x00, 0xFF},
-  2, simpleButtonServiceChars
-};
-
-
-// Device Info Service and Characteristics
-BLE_Char pnpCharacteristic =
-{
-  {0x50, 0x2A},
-  BLE_READABLE
-};
-
-BLE_Char manufacturerCharacteristic =
-{
-  {0x29, 0x2A},
-  BLE_READABLE
-};
-
-BLE_Char *deviceInfoServiceChars[] = {&pnpCharacteristic, &manufacturerCharacteristic};
-
-BLE_Service deviceInfoService =
-{
-  {0x0A, 0x18},
-  2, deviceInfoServiceChars
-};
-
-
 // HID Service and Characteristics
 
-BLE_Char m_protocolModeCharacteristic =
+BLE_Char protocolModeCharacteristic =
 {
   {0x4E, 0x2A},
   BLE_READABLE | BLE_WRITABLE_NORSP
 };
 
+static const uint8_t inputDescriptorValue[] = {0x01, 0x01};
+BLE_Descriptor inputReportDescriptor
+{
+  {0x08, 0x29},
+  BLE_PERMIT_READ,
+  &inputDescriptorValue,
+  sizeof(inputDescriptorValue)
+};
+
 BLE_Char inputReportCharacteristic =
 {
   {0x4D, 0x2A},
-  BLE_READABLE | BLE_NOTIFIABLE
+  BLE_READABLE | BLE_NOTIFIABLE,
+  NULL,
+  &inputReportDescriptor
 };
 
 BLE_Char reportMapCharacteristic =
@@ -136,38 +96,13 @@ BLE_Char m_hidControlCharacteristic =
   BLE_WRITABLE_NORSP
 };
 
-BLE_Char RRDescriptor =
-{
-  {0x08, 0x29},
-  BLE_READABLE | BLE_NOTIFIABLE,
-  "hola"
-};
-
-BLE_Char *hidServiceChars[] = {&hidInfoCharacteristic, &reportMapCharacteristic, &m_protocolModeCharacteristic, &inputReportCharacteristic   , &m_hidControlCharacteristic, &RRDescriptor  };
+BLE_Char *hidServiceChars[] = {&hidInfoCharacteristic, &reportMapCharacteristic, &protocolModeCharacteristic, &inputReportCharacteristic, &m_hidControlCharacteristic};
 
 BLE_Service hidService =
 {
   {0x12, 0x18},
-  6, hidServiceChars
+  5, hidServiceChars
 };
-
-
-// Baterie Service and Characteristics
-BLE_Char batteryLevelCharacteristic =
-{
-  {0x19, 0x2A},
-  BLE_READABLE | BLE_NOTIFIABLE,
-  "hola"
-};
-
-BLE_Char *batteryServiceChars[] = {&batteryLevelCharacteristic};
-
-BLE_Service batteryService =
-{
-  {0x0F, 0x18},
-  1, batteryServiceChars
-};
-
 
 void setup() {
   Serial.begin(9600);
@@ -181,24 +116,12 @@ void setup() {
   button1State = digitalRead(button1Pin);
   button2State = digitalRead(button2Pin);
 
-  /* Add and initialize Button Service */
-//  ble.addService(&simpleButtonService);
-//  ble.writeValue(&button1Char, button1State);
-//  ble.writeValue(&button2Char, button2State);
-
-
-  //  ble.addService(&deviceInfoService);
-  //  static const uint8_t pnpVal[] = {0x02, 0xe5, 0x02, 0xa1, 0x11, 0x02, 0x10};
-  //  ble.writeValue(&pnpCharacteristic, pnpVal);
-  //  ble.writeValue(&manufacturerCharacteristic, "David Martinez Montes");
-
-
   ble.addService(&hidService);
 
-  static const uint8_t hidInfo[] = {0x01, 0x01, 0x25, 0x02};
+  const uint8_t hidInfo[] = {0x01, 0x01, 0x25, 0x02};
   ble.writeValue(&hidInfoCharacteristic, hidInfo, sizeof(hidInfo));
 
-  static const uint8_t _reportMapValue[] = { 
+  const uint8_t _reportMapValue[] = { 
     USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
     USAGE(1),            0x02, // USAGE (Mouse)
     COLLECTION(1),       0x01, // COLLECTION (Application)
@@ -241,19 +164,7 @@ void setup() {
   };
   ble.writeValue(&reportMapCharacteristic, _reportMapValue, sizeof(_reportMapValue));
   
-  ble.writeValue(&m_protocolModeCharacteristic,(uint8_t)1);
-
-  
-  static const uint8_t rr[] = {0x01, 0x01};
-  RRDescriptor._handle = inputReportCharacteristic._CCCDHandle-1;
-  ble.writeValue(&RRDescriptor, rr, sizeof(rr));
-
-  //nothing to &m_hidControlCharacteristic
-  
-  ble.addService(&batteryService);
-  uint8_t batteryLevel = 87;
-  ble.writeValue(&batteryLevelCharacteristic, (uint8_t)batteryLevel);
-
+  ble.writeValue(&protocolModeCharacteristic,(uint8_t)1);
 
   /* Start Advertising */
   ble.setAdvertName("BLE I/O Demo");
@@ -286,17 +197,9 @@ void loop() {
     {
       button1State = newButton1State;
       Serial.print("Button 1 Val Changed="); Serial.println(button1State);
-      ble.writeValue(&button1Char, button1State);
-
-       ble.writeValue(&batteryLevelCharacteristic, (uint8_t)80);
+      
       uint8_t m[5];
-      m[0] = MOUSE_LEFT;
-      m[1] = 0;
-      m[2] = 0;
-      m[3] = 0;
-      m[4] = 0;
-      ble.writeValue(&inputReportCharacteristic, m, sizeof(m));
-      m[0] = 0;
+      m[0] = (button1State == 0) ? MOUSE_LEFT : 0;
       m[1] = 0;
       m[2] = 0;
       m[3] = 0;
@@ -308,16 +211,9 @@ void loop() {
     {
       button2State = newButton2State;
       Serial.print("Button 2 Val Changed="); Serial.println(button2State);
-      ble.writeValue(&button2Char, button2State);
 
       uint8_t m[5];
-      m[0] = MOUSE_RIGHT;
-      m[1] = MOUSE_RIGHT;
-      m[2] = MOUSE_RIGHT;
-      m[3] = MOUSE_RIGHT;
-      m[4] = MOUSE_RIGHT;
-      ble.writeValue(&inputReportCharacteristic, m, sizeof(m));
-      m[0] = 0;
+      m[0] = (button2State == 0) ? MOUSE_RIGHT : 0;
       m[1] = 0;
       m[2] = 0;
       m[3] = 0;

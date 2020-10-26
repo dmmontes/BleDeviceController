@@ -56,6 +56,10 @@ int BLE_registerService(BLE_Service *bleService)
       logUUID(bleService->chars[i]->UUID, bleService->chars[i]->_UUIDlen);
       logParam("Handle", bleService->chars[i]->_handle);
       bleService->chars[i]->_CCCDHandle = service->charAttrHandles[i].cccdHandle;
+      if (bleService->chars[i]->descriptor)
+      {
+          bleService->chars[i]->descriptor->_handle = service->charAttrHandles[i].sUUIDHandle;
+      } 
       if (service->charTable[i].pUserDesc)
       {
         free(service->charTable[i].pUserDesc);
@@ -67,6 +71,10 @@ int BLE_registerService(BLE_Service *bleService)
       if (service->charTable[i].pFormat)
       {
         free(service->charTable[i].pFormat);
+      }
+      if (service->charTable[i].pShortUUID)
+      {
+        free(service->charTable[i].pShortUUID);
       }
     }
     addServiceNode(bleService);
@@ -136,6 +144,20 @@ static BLE_Char* getChar(uint16_t handle)
     if (service->chars[i]->_handle == handle)
     {
       return service->chars[i];
+    }
+  }
+  return NULL;
+}
+
+static BLE_Descriptor* getDescriptor(uint16_t handle)
+{
+  BLE_Service *service = getServiceWithChar(handle);
+  for (uint8_t i = 0; i < service->numChars; i++)
+  {
+    BLE_Descriptor* descriptor = service->chars[i]->descriptor;
+    if (descriptor != NULL && descriptor->_handle == handle)
+    {
+      return descriptor;
     }
   }
   return NULL;
@@ -266,11 +288,15 @@ static void constructChar(SAP_Char_t *sapChar, BLE_Char *bleChar)
     sapChar->pFormat   = NULL;
   }
   
-  sapChar->pShortUUID = (SAP_ShortUUID_t *) malloc(sizeof(*sapChar->pShortUUID));
-  sapChar->pShortUUID->perms   = (uint8_t)0x03;
-  sapChar->pShortUUID->maxLen  = (uint16_t)0x00FF;
-  sapChar->pShortUUID->UUID[0] = (uint8_t)0x08;
-  sapChar->pShortUUID->UUID[1] = (uint8_t)0x29;
+  sapChar->pShortUUID   = NULL;
+  if (bleChar->descriptor)
+  {
+    sapChar->pShortUUID = (SAP_ShortUUID_t *) malloc(sizeof(*sapChar->pShortUUID));
+    sapChar->pShortUUID->perms   = bleChar->descriptor->properties;
+    sapChar->pShortUUID->maxLen  = (uint16_t)0x00FF;
+    sapChar->pShortUUID->UUID[0] = bleChar->descriptor->UUID[0];
+    sapChar->pShortUUID->UUID[1] = bleChar->descriptor->UUID[1];
+  }
 	
   sapChar->pLongUUID   = NULL;
 }
@@ -303,13 +329,27 @@ static uint8_t serviceReadAttrCB(void *context,
   BLE_Char *bleChar = getChar(charHdl);
   if (bleChar == NULL)
   {
-    *len = 0;
-    status = SNP_UNKNOWN_ATTRIBUTE;
-    logError("Unknown handle", connectionHandle);
+    BLE_Descriptor *bleDescriptor = getDescriptor(charHdl);
+    if (bleDescriptor != NULL)
+    {   
+      logParam("Handle", bleDescriptor->_handle);
+      logParam("Offset", offset);
+      uint8_t *src = (uint8_t *) bleDescriptor->value + offset;
+      uint16_t remaining = bleDescriptor->valueLen - offset;
+      *len = MIN(remaining, maxSize);
+      logParam("Read length", *len);
+      logParam("Data", pData, *len, true);
+      memcpy(pData, src, *len);
+    }
+    else
+    {
+      *len = 0;
+      status = SNP_UNKNOWN_ATTRIBUTE;
+      logError("Unknown handle", connectionHandle);
+    } 
   }
   else if (bleChar->_valueLen <= offset)
   {
-    logParam("Handle", bleChar->_handle);
     logParam("Offset too big");
     logParam("Value len", bleChar->_valueLen);
     logParam("Offset", offset);
@@ -317,7 +357,6 @@ static uint8_t serviceReadAttrCB(void *context,
   }
   else
   {
-    logParam("Handle", bleChar->_handle);
     logParam("Offset", offset);
     uint8_t *src = (uint8_t *) bleChar->_value + offset;
     uint16_t remaining = bleChar->_valueLen - offset;

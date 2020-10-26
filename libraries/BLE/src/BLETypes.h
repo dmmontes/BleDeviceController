@@ -72,6 +72,14 @@
 #define BLE_AUTHEN                     0x40
 #define BLE_ENCRYPT                    0x80
 
+/* Descripotr permission properties */
+#define BLE_PERMIT_READ           SNP_GATT_PERMIT_READ                
+#define BLE_PERMIT_WRITE          SNP_GATT_PERMIT_WRITE     
+#define BLE_PERMIT_AUTHEN_READ    SNP_GATT_PERMIT_AUTHEN_READ  
+#define BLE_PERMIT_AUTHEN_WRITE   SNP_GATT_PERMIT_AUTHEN_WRITE   
+#define BLE_PERMIT_ENCRYPT_READ   SNP_GATT_PERMIT_ENCRYPT_READ     
+#define BLE_PERMIT_ENCRYPT_WRITE  SNP_GATT_PERMIT_ENCRYPT_WRITE      
+
 /* Upper two bits are reserved to set Authen and Encrypt */
 #define BLE_PROPERTIES_MASK            0x3F
 
@@ -115,10 +123,20 @@
 
 typedef struct
 {
+  unsigned char     UUID[2]; // array of UUID bytes, little-endian
+  unsigned char     properties; // bitwise OR of macros: e.g. BLE_READABLE | BLE_WRITABLE
+  const void        *value;
+  uint16_t          valueLen;
+  uint16_t          _handle;
+} BLE_Descriptor;
+
+typedef struct
+{
   unsigned char     UUID[16]; // array of UUID bytes, little-endian
   unsigned char     properties; // bitwise OR of macros: e.g. BLE_READABLE | BLE_WRITABLE
   // Null terminated; internally set permissions to read only so we don't have to worry about the length changing
   const char        *charDesc;
+  BLE_Descriptor    *descriptor; 
   /* Energia user should never need to touch these. */
   unsigned char     _valueFormat;
   unsigned char     _valueExponent; // only used with integer formats, e.g. value = storedValue*10^valueExponent
