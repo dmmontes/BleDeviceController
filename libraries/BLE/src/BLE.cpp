@@ -610,6 +610,11 @@ int BLE::writeValue(BLE_Char *bleChar, const uint8_t buf[], int len)
   return apCharWriteValue(bleChar, (uint8_t *) buf, (len)*sizeof(*buf), true);
 }
 
+int BLE::writeValue(BLE_Char *bleChar, const int8_t buf[], int len)
+{
+  return apCharWriteValue(bleChar, (int8_t *) buf, (len)*sizeof(*buf), true);
+}
+
 /*
  * Use buffer of size len+1 so the null-termination is stored. This way the
  * stored strings match the functionality of strcpy, which copies it.

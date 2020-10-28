@@ -17,7 +17,7 @@
 
 /* Pin numbers used by Energia pin functions and in the GPIO tables. */
 #define PIN2_5             19
-#define PIN6_0             2
+#define PIN6_0             8
 #define PIN6_7             35
 
 #define CC2650_RESET_PIN   PIN6_7

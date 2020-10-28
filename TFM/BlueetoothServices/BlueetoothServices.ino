@@ -43,15 +43,28 @@
 #define MOUSE_FORWARD 16
 #define MOUSE_ALL (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE) 
 
+/* Pin number variables for Buttons on MSP432P401R LaunchPad */
+static const uint8_t button1Pin = 33;
+static const uint8_t button2Pin = 32;
+
+// constants won't change. They're used here to 
+// set pin numbers:
+static const uint8_t joystickSel = 5;     // the number of the joystick select pin
+static const uint8_t joystickX = 2;       // the number of the joystick X-axis analog
+static const uint8_t joystickY =  26;     // the number of the joystick Y-axis analog
+
+static const int MIDDLE_READ_VALUE = 512;
+static const int JOYSTICK_TRESHOLD = 100;
+static const int MOVEMENT_LIMIT = MIDDLE_READ_VALUE - JOYSTICK_TRESHOLD;
+static const int MOUSE_MOVEMENT_LIMIT = 20;
 
 /* State Variables for Button Chars */
 // Buttons are active low so initial state is 1
 uint8_t button1State = 1;
 uint8_t button2State = 1;
 
-/* Pin number variables for Buttons on MSP432P401R LaunchPad */
-uint8_t button1Pin = 33;
-uint8_t button2Pin = 32;
+// variables will change:
+int joystickSelState = 1;      // variable for reading the joystick sel status
 
 // HID Service and Characteristics
 
@@ -104,6 +117,10 @@ BLE_Service hidService =
   5, hidServiceChars
 };
 
+
+static int8_t mouseAction[] = {0, 0, 0, 0, 0};
+
+
 void setup() {
   Serial.begin(9600);
   ble.setLogLevel(BLE_LOG_ERRORS | BLE_LOG_RPCS | BLE_LOG_REC_MSGS | BLE_LOG_ALL);
@@ -112,6 +129,9 @@ void setup() {
   // Note that the switches on the MSP432P401R LP need pullups
   pinMode(button1Pin, INPUT_PULLUP);
   pinMode(button2Pin, INPUT_PULLUP);
+
+  // initialize the pushbutton pin as an input:
+  pinMode(joystickSel, INPUT_PULLUP);     
 
   button1State = digitalRead(button1Pin);
   button2State = digitalRead(button2Pin);
@@ -171,8 +191,8 @@ void setup() {
   ble.startAdvert();
 
   /* Setup security params */
-  ble.setPairingMode(BLE_SECURITY_WAIT_FOR_REQUEST);
-  ble.setIoCapabilities(BLE_DISPLAY_YES_NO);
+  // ble.setPairingMode(BLE_SECURITY_WAIT_FOR_REQUEST);
+  // ble.setIoCapabilities(BLE_DISPLAY_YES_NO);
   ble.useBonding(true);
 
   /* Print a message to the console */
@@ -186,39 +206,70 @@ void loop() {
 
   if (ble.isConnected())
   {
-    // Read the state of both buttons and send a notification
-    // if either is pressed, note that your app will
-    // need to register for notifications by writing 01:00
-    // to the button char's CCCD
-    uint8_t newButton1State = digitalRead(button1Pin);
-    uint8_t newButton2State = digitalRead(button2Pin);
 
+    bool action = false;
+    mouseAction[1]=0;
+    mouseAction[2]=0;
+
+    // Read the state of both buttons and send a notification
+    uint8_t newButton1State = digitalRead(button1Pin);
     if (button1State != newButton1State)
     {
       button1State = newButton1State;
-      Serial.print("Button 1 Val Changed="); Serial.println(button1State);
-      
-      uint8_t m[5];
-      m[0] = (button1State == 0) ? MOUSE_LEFT : 0;
-      m[1] = 0;
-      m[2] = 0;
-      m[3] = 0;
-      m[4] = 0;
-      ble.writeValue(&inputReportCharacteristic, m, sizeof(m));
+      Serial.print("Button 1 Val Changed ="); Serial.println(button1State);
+
+      mouseAction[0] = (button1State == 0) ? MOUSE_LEFT : 0;
+      action = true;
     }
 
+    uint8_t newButton2State = digitalRead(button2Pin);
     if (button2State != newButton2State)
     {
       button2State = newButton2State;
-      Serial.print("Button 2 Val Changed="); Serial.println(button2State);
+      Serial.print("Button 2 Val Changed = "); Serial.println(button2State);
 
-      uint8_t m[5];
-      m[0] = (button2State == 0) ? MOUSE_RIGHT : 0;
-      m[1] = 0;
-      m[2] = 0;
-      m[3] = 0;
-      m[4] = 0;
-      ble.writeValue(&inputReportCharacteristic, m, sizeof(m));
+      mouseAction[0] = (button2State == 0) ? MOUSE_RIGHT : 0;
+      action = true;
     }
+
+    uint8_t newjoystickSelState = digitalRead(joystickSel);
+    if (joystickSelState != newjoystickSelState)
+    {
+      joystickSelState = newjoystickSelState;
+      Serial.print("Joystick button Val Changed = "); Serial.println(joystickSelState);
+      
+      mouseAction[0] = (joystickSelState == 0) ? MOUSE_MIDDLE : 0;
+      action = true;
+    }
+    
+    // read the analog value of joystick x axis
+    const int joystickXState = analogRead(joystickX);
+    int difference = joystickXState - MIDDLE_READ_VALUE;
+    if (abs(difference) > JOYSTICK_TRESHOLD)
+    {
+      difference = map (difference, -MOVEMENT_LIMIT, MOVEMENT_LIMIT, -MOUSE_MOVEMENT_LIMIT, MOUSE_MOVEMENT_LIMIT);
+      Serial.print("Joystick X: units moved = "); Serial.println(difference);
+      
+      mouseAction[1] = difference;
+      action = true;
+    }
+    
+    // read the analog value of joystick x axis
+    const int joystickYState = analogRead(joystickY);
+    difference = MIDDLE_READ_VALUE - joystickYState;
+    if (abs(difference) > JOYSTICK_TRESHOLD)
+    {
+      difference = map (difference, -MOVEMENT_LIMIT, MOVEMENT_LIMIT, -MOUSE_MOVEMENT_LIMIT, MOUSE_MOVEMENT_LIMIT);
+      Serial.print("Joystick Y: units moved = "); Serial.println(difference);
+    
+      mouseAction[2] = difference;
+      action = true;
+    }
+      
+    if (action)
+    {
+      ble.writeValue(&inputReportCharacteristic, mouseAction, sizeof(mouseAction));
+    }
+      
   }
 }
