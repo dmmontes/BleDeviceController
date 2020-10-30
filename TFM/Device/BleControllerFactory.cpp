@@ -1,4 +1,7 @@
 #include "BleControllerFactory.h"
+
+#include "DeviceLogger.h"
+
 #include "BleMouseController.h"
 
 namespace Ble
@@ -6,22 +9,22 @@ namespace Ble
 
     IBleController *BleControllerFactory::createBleController(BleType type, String name, bool useSecurity)
     {
-        Serial.print("BleControllerFactory::createBleController() BleType: ");
-        Serial.println(static_cast<uint8_t>(type));
+        LOG_DEBUG(String("BleControllerFactory::createBleController() BleType: ") + String(static_cast<uint8_t>(type)));
 
         if (bleController_)
         {
-            Serial.println("BleControllerFactory::createBleController() Previouse Ble Controller should be destroyed before");
+            LOG_WARNING("BleControllerFactory::createBleController() Previouse Ble Controller should be destroyed before");
             return nullptr;
         }
 
         switch (type)
         {
         case BleControllerFactory::BleType::MOUSE:
-            bleController_ = (IBleController *)malloc(sizeof(*bleController_));
+            // bleController_ = static_cast<IBleController *>(malloc(sizeof(BleMouseController)));
+            bleController_ = new BleMouseController(name, useSecurity);
             break;
         default:
-            Serial.println("BleControllerFactory::createBleController() Error, not specified type");
+            LOG_WARNING("BleControllerFactory::createBleController() Unknown specified type");
             break;
         }
         return bleController_;
@@ -29,14 +32,15 @@ namespace Ble
 
     void BleControllerFactory::deleteBleController(IBleController *bleController)
     {
-        Serial.println("BleControllerFactory::deleteBleController()");
+        LOG_DEBUG("BleControllerFactory::deleteBleController()");
         if (bleController != bleController_)
         {
-            Serial.println("BleControllerFactory::deleteBleController() Ble Controller different from created previously");
+            LOG_WARNING("BleControllerFactory::deleteBleController() Ble Controller different from created previously");
             return;
         }
 
-        free(bleController_);
+        // free(bleController_);
+        delete bleController_;
         bleController_ = nullptr;
     }
 

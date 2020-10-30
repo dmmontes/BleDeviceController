@@ -1,16 +1,18 @@
 #include "IBleController.h"
 
+#include "DeviceLogger.h"
+
 namespace Ble
 {
     IBleController::~IBleController()
     {
-        Serial.println("IBleController::~IBleController()");
+        LOG_DEBUG("IBleController::~IBleController()");
         ble.end();
     }
 
     void IBleController::initBLE(String &name, bool useSecurity)
     {
-        Serial.println("IBleController::initBLE()");
+        LOG_DEBUG("IBleController::initBLE()");
 
         ble.setLogLevel(BLE_LOG_ERRORS | BLE_LOG_RPCS | BLE_LOG_REC_MSGS | BLE_LOG_ALL);
         ble.begin();
@@ -30,7 +32,7 @@ namespace Ble
         ble.useBonding(true);
 
         /* Print a message to the console */
-        Serial.println("IBleController::initBLE() Start advertising");
+        LOG_DEBUG("IBleController::initBLE() Start advertising");
     }
 
 } // namespace Ble

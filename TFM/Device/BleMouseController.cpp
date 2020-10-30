@@ -1,5 +1,7 @@
 #include "BleMouseController.h"
 
+#include "DeviceLogger.h"
+
 /* HID Class Report Descriptor */
 /* Short items: size is 0, 1, 2 or 3 specifying 0, 1, 2 or 4 (four) bytes */
 /* of data as per HID Class standard */
@@ -73,20 +75,20 @@ namespace Ble
           ///< HID Service
           hidService_{{0x12, 0x18}, 5, hidServiceCharacteristics_}
     {
-        Serial.println("BleMouseController::BleMouseController()");
+        LOG_DEBUG("BleMouseController::BleMouseController()");
         initBLE(name, useSecurity);
     }
 
     bool BleMouseController::sendData(int8_t *data, size_t dataSize)
     {
-        Serial.println("BleMouseController::sendData()");
+        LOG_DEBUG("BleMouseController::sendData()");
 
         ble.writeValue(&inputReportCharasteristic_, data, dataSize);
     }
 
     void BleMouseController::configureServices()
     {
-        Serial.println("BleMouseController::configureServices()");
+        LOG_DEBUG("BleMouseController::configureServices()");
 
         // Add Service
         ble.addService(&hidService_);

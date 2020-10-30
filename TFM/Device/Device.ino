@@ -1,4 +1,6 @@
+#include "DeviceLogger.h"
 #include "BleControllerFactory.h"
+#include "DeviceContext.h"
 
 // /* Pin number variables for Buttons on MSP432P401R LaunchPad */
 // static const uint8_t button1Pin = 33;
@@ -24,11 +26,12 @@
 // int joystickSelState = 1; // variable for reading the joystick sel status
 
 Ble::BleControllerFactory bleControllerFactory;
+DeviceContext deviceContext(bleControllerFactory);
 
 void setup()
 {
-  Serial.begin(9600);
-  Serial.print("BleMouseController::deleteBleController() BleType: ");
+  DeviceLogger::setVerbosity(DeviceLogger::Verbosity::DEBUG);
+  // Serial.print("BleMouseController::deleteBleController() BleType: ");
 
   // // Note that the switches on the MSP432P401R LP need pullups
   // pinMode(button1Pin, INPUT_PULLUP);
@@ -39,21 +42,18 @@ void setup()
 
   // button1State = digitalRead(button1Pin);
   // button2State = digitalRead(button2Pin);
-  Ble::IBleController *mouseController = bleControllerFactory.createBleController(Ble::BleControllerFactory::BleType::MOUSE, String("Device Controller"), false);
-  bleControllerFactory.deleteBleController(mouseController);
 }
 
 // the loop routine runs over and over again forever as a task.
 void loop()
 {
+  deviceContext.detectAction();
   ble.handleEvents();
-  Serial.println("BleMouseController::deleteBleController() BleType: ");
-  // ble.handleEvents();
 
   // if (ble.isConnected())
   // {
 
-  //   bool action = false;
+  //    bool action = false;
   //   mouseAction[1]=0;
   //   mouseAction[2]=0;
 
