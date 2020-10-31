@@ -14,10 +14,11 @@ public:
     /**
      * @brief Construct a new Bluetooth State object
      * 
+     * @param context Reference to actual context
+     * @param action Reference to action to be done
      * @param bleController Reference to a Ble controller
-     * @param deviceContext Pointer to actual context
      */
-    BluetoothState(DeviceContext *deviceContext, Ble::IBleController &bleController) : IState(deviceContext), bleController_(bleController) {}
+    BluetoothState(IContext &context, IAction &action, Ble::IBleController &bleController) : IState(context, action), bleController_(bleController) {}
 
 protected:
     Ble::IBleController &bleController_; ///< Controller of Ble connection

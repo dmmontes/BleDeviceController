@@ -20,7 +20,6 @@ namespace Ble
         switch (type)
         {
         case BleControllerFactory::BleType::MOUSE:
-            // bleController_ = static_cast<IBleController *>(malloc(sizeof(BleMouseController)));
             bleController_ = new BleMouseController(name, useSecurity);
             break;
         default:

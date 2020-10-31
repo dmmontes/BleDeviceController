@@ -610,9 +610,9 @@ int BLE::writeValue(BLE_Char *bleChar, const uint8_t buf[], int len)
   return apCharWriteValue(bleChar, (uint8_t *) buf, (len)*sizeof(*buf), true);
 }
 
-int BLE::writeValue(BLE_Char *bleChar, const int8_t buf[], int len)
+int BLE::writeValue(BLE_Char *bleChar, int8_t *buf, int len)
 {
-  return apCharWriteValue(bleChar, (int8_t *) buf, (len)*sizeof(*buf), true);
+  return apCharWriteValue(bleChar, buf, (len) * sizeof(*buf), true);
 }
 
 /*

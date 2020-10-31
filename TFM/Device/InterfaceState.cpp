@@ -4,14 +4,14 @@
 
 int cont = 0;
 
-InterfaceState::InterfaceState(DeviceContext *deviceContext) : IState(deviceContext)
+InterfaceState::InterfaceState(IContext &context, IAction &action) : IState(context, action)
 {
     LOG_DEBUG("InterfaceState::InterfaceState()");
 }
 
-void InterfaceState::processAction()
+void InterfaceState::processAction(const IAction::ActionData &actionData)
 {
     LOG_DEBUG("InterfaceState::processAction()");
     screen_.draw(Screen::ScreenAction::NONE);
-    deviceContext_->changeState(DeviceContext::StateType::MOUSE);
+    context_.changeState(IContext::StateType::MOUSE);
 }

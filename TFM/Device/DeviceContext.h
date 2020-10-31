@@ -2,37 +2,19 @@
 #ifndef DEVICE_CONTEXT
 #define DEVICE_CONTEXT
 
-#include <cstdint>
-
 #include "BleControllerFactory.h"
+#include "IAction.h"
+#include "IContext.h"
+#include "IDetectorFactory.h"
 
 class IState;
 
 /**
  * @brief Represents the context of the device. It manages its states and process actions performed by user
  */
-class DeviceContext
+class DeviceContext : public IContext
 {
 public:
-    /**
-     * @brief Type of Detector
-     */
-    enum class DetectorType : uint8_t
-    {
-        BUTTON,       ///< Buton Detector
-        JOYSTICK,     ///< Joystick Detector
-        ACCELEROMETER ///< Accelerometer Detector
-    };
-
-    /**
-     * @brief Type of devices's states
-     */
-    enum class StateType : uint8_t
-    {
-        INTERFACE, ///< Showing initial interface
-        MOUSE      ///< Ble mouse mode
-    };
-
     /**
      * @brief Construct a new Device Context object 
      * 
@@ -43,19 +25,16 @@ public:
     /**
      * @brief Destroy the Device Context object 
      */
-    ~DeviceContext();
+    virtual ~DeviceContext();
+
+    ///< Implementation of virtual methods from IContext
+    virtual void setDetectors(DetectorType *detectorTypes, size_t numDetectors) override;
+    virtual void changeState(StateType newState) override;
 
     /**
      * @brief General process of the device, detecting actions performed by user 
      */
     void detectAction();
-
-    /**
-     * @brief Change the state of the device to a new one
-     * 
-     * @param newState New state of the device
-     */
-    void changeState(StateType newState);
 
 private:
     /**
@@ -64,8 +43,11 @@ private:
     void cleanup();
 
     Ble::BleControllerFactory &bleControllerFactory_; ///< Factory of Ble controllers
-    Ble::IBleController *bleController_;              ///< Ble Controller being used by state
-    IState *state_{nullptr};                          ///< Pointer to actual state of the device
+    Ble::IBleController *bleController_{nullptr};     ///< Ble Controller being used by state
+    Detector::IDetectorFactory *detectorFactory_{nullptr}; ///< Factory of detectors
+    Detector::DetectorPtr *detectors_{nullptr};            ///< Vector of detectors
+    IAction *action_{nullptr};                             ///< Action to be performed
+    IState *state_{nullptr};                               ///< Pointer to actual state of the device
 };
 
 #endif //DEVICE_CONTEXT

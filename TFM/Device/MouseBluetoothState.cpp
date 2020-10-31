@@ -1,13 +1,20 @@
 #include "MouseBluetoothState.h"
 
 #include "DeviceLogger.h"
+#include "MouseAction.h"
 
-MouseBluetoothState::MouseBluetoothState(DeviceContext *deviceContext, Ble::IBleController &bleController) : BluetoothState(deviceContext, bleController)
+MouseBluetoothState::MouseBluetoothState(IContext &context, IAction &action, Ble::IBleController &bleController) : BluetoothState(context, action, bleController)
 {
     LOG_DEBUG("MouseBluetoothState::MouseBluetoothState()");
+
+    // Add mouse bluetooth detectors
+    const size_t numDetectors{2};
+    IContext::DetectorType detectors[numDetectors]{IContext::DetectorType::BUTTON, IContext::DetectorType::JOYSTICK};
+    context_.setDetectors(detectors, numDetectors);
 }
 
-void MouseBluetoothState::processAction()
+void MouseBluetoothState::processAction(const IAction::ActionData &actionData)
 {
     LOG_DEBUG("MouseBluetoothState::processAction()");
+    bleController_.sendData(actionData.data, actionData.dataSize);
 }

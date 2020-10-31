@@ -14,13 +14,14 @@ public:
     /**
      * @brief Construct a new Interface State object
      * 
-     * @param deviceContext Pointer to actual context
+     * @param context Reference to actual context
+     * @param action Reference to action to be done
      */
-    InterfaceState(DeviceContext *deviceContext);
+    InterfaceState(IContext &context, IAction &action);
 
 protected:
     ///< Implementation of virtual methods from IState
-    virtual void processAction() override;
+    virtual void processAction(const IAction::ActionData &actionData) override;
 
 private:
     Screen screen_; ///< Screen of the device. Draw in the display a menu of options

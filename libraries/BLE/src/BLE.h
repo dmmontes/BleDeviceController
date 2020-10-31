@@ -96,7 +96,7 @@ class BLE : public Stream
     int writeValue(BLE_Char *bleChar, float value); //_float
     int writeValue(BLE_Char *bleChar, double value); //_double
     int writeValue(BLE_Char *bleChar, const uint8_t *buf, int len); //_uint8_t
-    int writeValue(BLE_Char *bleChar, const int8_t *buf, int len); //_int8_t
+    int writeValue(BLE_Char *bleChar, int8_t *buf, int len);        //_int8_t
     int writeValue(BLE_Char *bleChar, const char *str); // Char array //_string
     int writeValue(BLE_Char *bleChar, String *str); // Object, calls fxn for char array //_String
     bool readValue_bool(BLE_Char *bleChar);
