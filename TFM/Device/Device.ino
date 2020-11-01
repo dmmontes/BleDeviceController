@@ -7,12 +7,11 @@ DeviceContext deviceContext(bleControllerFactory);
 
 void setup()
 {
-  DeviceLogger::setVerbosity(DeviceLogger::Verbosity::DEBUG);
+  DeviceLogger::setVerbosity(DeviceLogger::Verbosity::WARNING);
 }
 
 // the loop routine runs over and over again forever as a task.
 void loop()
 {
   deviceContext.detectAction();
-  ble.handleEvents();
 }

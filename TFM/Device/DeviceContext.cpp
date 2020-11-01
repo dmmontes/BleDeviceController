@@ -24,12 +24,12 @@ DeviceContext::~DeviceContext()
 void DeviceContext::detectAction()
 {
     LOG_DEBUG("DeviceContext::detectAction()");
-    state_->detectAction();
+    state_->detectAction(action_);
 }
 
 void DeviceContext::setDetectors(DetectorType *detectorTypes, size_t numDetectors)
 {
-    LOG_DEBUG("DeviceContext::setDetectors()");
+    LOG_DEBUG(String("DeviceContext::setDetectors(), numDetectors: ") + String(numDetectors));
     Detector::IDetectorFactory::DetectorType factoryDetectorTypes[numDetectors];
     for (size_t i = 0; i < numDetectors; ++i)
     {
@@ -42,7 +42,9 @@ void DeviceContext::setDetectors(DetectorType *detectorTypes, size_t numDetector
         LOG_ERROR("DeviceContext::setDetectors() failed creation detectors");
         return;
     }
-    state_->setDetectors(detectors_, numDetectors);
+
+    numDetectors_ = numDetectors;
+    setDetectionType();
 }
 
 void DeviceContext::changeState(StateType newState)
@@ -56,20 +58,21 @@ void DeviceContext::changeState(StateType newState)
     case DeviceContext::StateType::INTERFACE:
         detectorFactory_ = new Detector::InterfaceDetectorFactory();
         action_ = new InterfaceAction();
-        state_ = new InterfaceState(*this, *action_);
+        state_ = new InterfaceState(*this);
         break;
 
     case DeviceContext::StateType::MOUSE:
         detectorFactory_ = new Detector::MouseDetectorFactory();
         action_ = new MouseAction();
         bleController_ = bleControllerFactory_.createBleController(Ble::BleControllerFactory::BleType::MOUSE, "Mouse Controller", true);
-        state_ = new MouseBluetoothState(*this, *action_, *bleController_);
+        state_ = new MouseBluetoothState(*this, *bleController_);
         break;
 
     default:
         LOG_WARNING("DeviceContext::changeState() Unknown state");
-        break;
+        return;
     }
+    state_->setDetectors(detectors_, numDetectors_);
 }
 
 void DeviceContext::cleanup()
@@ -77,9 +80,14 @@ void DeviceContext::cleanup()
     LOG_DEBUG("DeviceContext::cleanup()");
 
     //Delete detector factory
-    detectorFactory_->deleteDetectors(detectors_);
-    delete detectorFactory_;
-    detectorFactory_ = nullptr;
+    if (detectorFactory_)
+    {
+        detectorFactory_->deleteDetectors(detectors_);
+        detectors_ = nullptr;
+        numDetectors_ = 0;
+        delete detectorFactory_;
+        detectorFactory_ = nullptr;
+    }
 
     // Delete ble controller
     bleControllerFactory_.deleteBleController(bleController_);
@@ -92,4 +100,13 @@ void DeviceContext::cleanup()
     // Delete state
     delete state_;
     state_ = nullptr;
+}
+
+void DeviceContext::setDetectionType()
+{
+    LOG_DEBUG("DeviceContext::setDetectionType()");
+    for (size_t i = 0; i < numDetectors_; ++i)
+    {
+        detectors_[i]->setDetectionType(detectionType_);
+    }
 }

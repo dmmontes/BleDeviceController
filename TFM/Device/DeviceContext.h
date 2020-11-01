@@ -42,12 +42,20 @@ private:
      */
     void cleanup();
 
+    /**
+     * @brief Set the Detection Type of detectors 
+     */
+    void setDetectionType();
+
     Ble::BleControllerFactory &bleControllerFactory_; ///< Factory of Ble controllers
     Ble::IBleController *bleController_{nullptr};     ///< Ble Controller being used by state
     Detector::IDetectorFactory *detectorFactory_{nullptr}; ///< Factory of detectors
     Detector::DetectorPtr *detectors_{nullptr};            ///< Vector of detectors
+    size_t numDetectors_{0};                               ///< Number of detectors
     IAction *action_{nullptr};                             ///< Action to be performed
     IState *state_{nullptr};                               ///< Pointer to actual state of the device
+
+    Detector::IDetector::DetectionType detectionType_{Detector::IDetector::DetectionType::QUALITY}; ///< Type of detection
 };
 
 #endif //DEVICE_CONTEXT

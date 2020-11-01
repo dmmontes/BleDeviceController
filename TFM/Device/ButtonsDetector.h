@@ -19,7 +19,7 @@ namespace Detector
         ButtonsDetector();
 
         ///< Implementation of virtual methods from IDetector
-        virtual void detectAction(IAction *action) override;
+        virtual bool detectAction(IAction *action) override;
 
     protected:
         /**
@@ -36,8 +36,9 @@ namespace Detector
          * 
          * @param buttonState state of the button
          * @param action[out] action to be filled by detector
+         * @return bool Indicates if an action has been detected
          */
-        virtual void detectAction(const ButtonState &buttonState, IAction *action) = 0;
+        virtual bool detectAction(const ButtonState &buttonState, IAction *action) = 0;
 
     private:
         const uint8_t button1Pin_ = 33; ///< Pin number variable for Button 1 in MKII

@@ -18,7 +18,7 @@ public:
      * @param context Reference to actual context
      * @param action Reference to action to be done
      */
-    IState(IContext &context, IAction &action);
+    IState(IContext &context);
 
     /**
      * @brief Add a vector of pointers to detectors (of user's actions) to the general process 
@@ -30,8 +30,10 @@ public:
 
     /**
      * @brief General process of the device, detecting actions performed by user 
+     * 
+     * @param action Pointer to action to be done
      */
-    void detectAction();
+    void detectAction(IAction *action);
 
 protected:
     /**
@@ -41,10 +43,14 @@ protected:
      */
     virtual void processAction(const IAction::ActionData &actionData) = 0;
 
+    /**
+     * @brief Indicates if detections should be performed
+     */
+    virtual bool isDetectionEnabled() = 0;
+
     IContext &context_; ///< Pointer to device's context
 
 private:
-    IAction &action_;                           ///< Action to be performed
     Detector::DetectorPtr *detectors_{nullptr}; ///< vector of pointers to detectors
     size_t numDetectors_{0};                    ///< Number of detectors
 };

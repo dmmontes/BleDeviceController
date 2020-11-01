@@ -15,7 +15,7 @@ namespace Detector
     }
     IDetector *MouseDetectorFactory::createJoystickDetector()
     {
-        LOG_DEBUG("MouseDetectorFactory::createButtonDetector()");
+        LOG_DEBUG("MouseDetectorFactory::createJoystickDetector()");
         return new MouseJoystickDetector();
     }
 

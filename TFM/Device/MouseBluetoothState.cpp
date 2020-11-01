@@ -3,7 +3,7 @@
 #include "DeviceLogger.h"
 #include "MouseAction.h"
 
-MouseBluetoothState::MouseBluetoothState(IContext &context, IAction &action, Ble::IBleController &bleController) : BluetoothState(context, action, bleController)
+MouseBluetoothState::MouseBluetoothState(IContext &context, Ble::IBleController &bleController) : BluetoothState(context, bleController)
 {
     LOG_DEBUG("MouseBluetoothState::MouseBluetoothState()");
 

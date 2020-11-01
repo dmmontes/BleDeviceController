@@ -26,15 +26,14 @@ namespace Detector
 
         for (size_t i = 0; i < numDetectors; ++i)
         {
-            DetectorPtr detector{nullptr};
             switch (detectorTypes[i])
             {
             case DetectorType::BUTTON:
-                detector = createButtonDetector();
+                detectors_[i] = createButtonDetector();
                 break;
 
             case DetectorType::JOYSTICK:
-                detector = createJoystickDetector();
+                detectors_[i] = createJoystickDetector();
                 break;
 
             default:
@@ -42,14 +41,13 @@ namespace Detector
                 break;
             }
 
-            if (!detector)
+            if (!detectors_[i])
             {
                 LOG_ERROR("IDetectorFactory::createDetectors() created nullptr detector");
                 freeDetectors();
                 return nullptr;
             }
         }
-
         return detectors_;
     }
 

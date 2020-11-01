@@ -14,12 +14,12 @@ namespace Detector
         pinMode(buttonPin_, INPUT_PULLUP);
     }
 
-    void JoystickDetector::detectAction(IAction *action)
+    bool JoystickDetector::detectAction(IAction *action)
     {
         LOG_DEBUG("JoystickDetector::detectAction()");
 
         JoystickState joystickState{digitalRead(buttonPin_), analogRead(xAxisPin_), analogRead(yAxisPin_)};
-        detectAction(joystickState, action);
+        return detectAction(joystickState, action);
     }
 
 } // namespace Detector

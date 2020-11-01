@@ -2,8 +2,8 @@
 
 #include "DeviceLogger.h"
 
-#include "MouseButtonsDetector.h"
-#include "MouseJoystickDetector.h"
+#include "InterfaceButtonsDetector.h"
+#include "InterfaceJoystickDetector.h"
 
 namespace Detector
 {
@@ -11,12 +11,12 @@ namespace Detector
     IDetector *InterfaceDetectorFactory::createButtonDetector()
     {
         LOG_DEBUG("InterfaceDetectorFactory::createButtonDetector()");
-        return nullptr;
+        return new InterfaceButtonsDetector();
     }
     IDetector *InterfaceDetectorFactory::createJoystickDetector()
     {
         LOG_DEBUG("InterfaceDetectorFactory::createButtonDetector()");
-        return nullptr;
+        return new InterfaceJoystickDetector();
     }
 
 } // namespace Detector

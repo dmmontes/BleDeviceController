@@ -15,10 +15,12 @@ public:
      * @brief Construct a new Bluetooth State object
      * 
      * @param context Reference to actual context
-     * @param action Reference to action to be done
      * @param bleController Reference to a Ble controller
      */
-    BluetoothState(IContext &context, IAction &action, Ble::IBleController &bleController) : IState(context, action), bleController_(bleController) {}
+    BluetoothState(IContext &context, Ble::IBleController &bleController);
+
+    ///< Implementation of virtual methods from IState
+    virtual bool isDetectionEnabled() override;
 
 protected:
     Ble::IBleController &bleController_; ///< Controller of Ble connection

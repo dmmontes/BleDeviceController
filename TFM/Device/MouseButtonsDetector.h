@@ -14,7 +14,7 @@ namespace Detector
     {
     protected:
         ///< Implementation of virtual methods from ButtonsDetector
-        virtual void detectAction(const ButtonState &buttonState, IAction *action) override;
+        virtual bool detectAction(const ButtonState &buttonState, IAction *action) override;
 
     private:
         uint8_t button1State_{1}; ///< State of the button 1 (0 press, 1 released)

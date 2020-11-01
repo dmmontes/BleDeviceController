@@ -14,10 +14,9 @@ public:
      * @brief Construct a new Mouse Bluetooth State object
      * 
      * @param context Reference to actual context
-     * @param action Reference to action to be done
      * @param bleController Reference to a Ble controller
      */
-    MouseBluetoothState(IContext &context, IAction &action, Ble::IBleController &bleController);
+    MouseBluetoothState(IContext &context, Ble::IBleController &bleController);
 
     ///< Implementation of virtual methods from IState
     virtual void processAction(const IAction::ActionData &actionData) override;

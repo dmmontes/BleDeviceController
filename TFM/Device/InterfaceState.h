@@ -15,13 +15,13 @@ public:
      * @brief Construct a new Interface State object
      * 
      * @param context Reference to actual context
-     * @param action Reference to action to be done
      */
-    InterfaceState(IContext &context, IAction &action);
+    InterfaceState(IContext &context);
 
 protected:
     ///< Implementation of virtual methods from IState
     virtual void processAction(const IAction::ActionData &actionData) override;
+    virtual bool isDetectionEnabled() override;
 
 private:
     Screen screen_; ///< Screen of the device. Draw in the display a menu of options

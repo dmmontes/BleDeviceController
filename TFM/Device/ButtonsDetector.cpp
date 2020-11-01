@@ -15,12 +15,12 @@ namespace Detector
         pinMode(button2Pin_, INPUT_PULLUP);
     }
 
-    void ButtonsDetector::detectAction(IAction *action)
+    bool ButtonsDetector::detectAction(IAction *action)
     {
         LOG_DEBUG("ButtonsDetector::detectAction()");
 
         ButtonState buttonState{digitalRead(button1Pin_), digitalRead(button2Pin_)};
-        detectAction(buttonState, action);
+        return detectAction(buttonState, action);
     }
 
 } // namespace Detector

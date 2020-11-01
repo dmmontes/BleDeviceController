@@ -14,7 +14,7 @@ namespace Ble
     {
         LOG_DEBUG("IBleController::initBLE()");
 
-        ble.setLogLevel(BLE_LOG_ERRORS | BLE_LOG_RPCS | BLE_LOG_REC_MSGS | BLE_LOG_ALL);
+        ble.setLogLevel(BLE_LOG_NONE);
         ble.begin();
 
         configureServices();
