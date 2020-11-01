@@ -7,7 +7,7 @@ DeviceContext deviceContext(bleControllerFactory);
 
 void setup()
 {
-  DeviceLogger::setVerbosity(DeviceLogger::Verbosity::WARNING);
+  DeviceLogger::setVerbosity(DeviceLogger::Verbosity::NONE);
 }
 
 // the loop routine runs over and over again forever as a task.

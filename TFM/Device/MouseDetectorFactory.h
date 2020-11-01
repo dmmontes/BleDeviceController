@@ -15,6 +15,7 @@ namespace Detector
         ///< Implementation of virtual methods from IDetectorFactory
         virtual IDetector *createButtonDetector() override;
         virtual IDetector *createJoystickDetector() override;
+        virtual IDetector *createAccelerometerDetector() override;
     };
 
 } // namespace Detector

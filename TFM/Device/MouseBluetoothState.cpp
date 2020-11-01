@@ -8,8 +8,8 @@ MouseBluetoothState::MouseBluetoothState(IContext &context, Ble::IBleController 
     LOG_DEBUG("MouseBluetoothState::MouseBluetoothState()");
 
     // Add mouse bluetooth detectors
-    const size_t numDetectors{2};
-    IContext::DetectorType detectors[numDetectors]{IContext::DetectorType::BUTTON, IContext::DetectorType::JOYSTICK};
+    const size_t numDetectors{3};
+    IContext::DetectorType detectors[numDetectors]{IContext::DetectorType::BUTTON, IContext::DetectorType::JOYSTICK, IContext::DetectorType::ACCELEROMETER};
     context_.setDetectors(detectors, numDetectors);
 }
 

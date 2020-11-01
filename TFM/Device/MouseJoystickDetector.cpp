@@ -39,43 +39,41 @@ namespace Detector
             actionDetected = true;
         }
 
-        // Read the analog value of joystick x axis
-        int16_t xMouseMove{0};
-        int16_t xAxisMove{joystickState.xAxis - middleAxisValue_};
-        LOG_DEBUG(String("Joystick X ") + String(xAxisMove));
-        if (abs(xAxisMove) > axisTreshold_)
+        // Read the analog value of joystick's axis
+        int8_t xMouseMove{detectMouseMovement(joystickState.xAxis - middleAxisValue_)};
+        int8_t yMouseMove{detectMouseMovement(middleAxisValue_ - joystickState.yAxis)};
+        if (xMouseMove != 0 || yMouseMove != 0)
         {
-            xMouseMove = (this->*mapAxisToCursor_)(xAxisMove);
-            LOG_DEBUG(String("Joystick X moved, units: ") + String(xMouseMove));
-            actionDetected = true;
-        }
-
-        // Read the analog value of joystick y axis
-        int16_t yMouseMove{0};
-        int16_t yAxisMove{middleAxisValue_ - joystickState.yAxis};
-        LOG_DEBUG(String("Joystick Y ") + String(yAxisMove));
-        if (abs(yAxisMove) > axisTreshold_)
-        {
-            yMouseMove = (this->*mapAxisToCursor_)(yAxisMove);
-            LOG_DEBUG(String("Joystick Y moved, units: ") + String(yMouseMove));
             actionDetected = true;
         }
 
         static_cast<MouseAction *>(action)->moveCursor(xMouseMove, yMouseMove);
-        delay(15);
         return actionDetected;
+    }
+
+    int8_t MouseJoystickDetector::detectMouseMovement(int16_t axisMove)
+    {
+        LOG_DEBUG(String("MouseJoystickDetector::detectMouseMovement() axisMove: ") + String(axisMove));
+
+        int16_t mouseMove{0};
+        if (abs(axisMove) > axisTreshold_)
+        {
+            mouseMove = (this->*mapAxisToCursor_)(axisMove);
+        }
+        return mouseMove;
     }
 
     int16_t MouseJoystickDetector::linearMapAxisToCursor(int16_t axisValue)
     {
-        LOG_DEBUG("MouseJoystickDetector::linearMapAxisToCursor_()");
+        LOG_DEBUG(String("MouseJoystickDetector::linearMapAxisToCursor_() axisValue: ") + String(axisValue));
         return map(axisValue, -axisMoveLimit_, axisMoveLimit_, -mouseMoveLimit_, mouseMoveLimit_);
     }
 
     int16_t MouseJoystickDetector::PolyMapAxisToCursor(int16_t axisValue)
     {
-        LOG_DEBUG("MouseJoystickDetector::PolyMapAxisToCursor_()");
-        return (axisValue < 0 ? -1 : 1) * (1.148687 - 0.0009004226 * axisValue + 0.0000257187 * axisValue * axisValue);
+        LOG_DEBUG(String("MouseJoystickDetector::PolyMapAxisToCursor_() axisValue: ") + String(axisValue));
+        uint16_t absAxisValue = abs(axisValue);
+        return (axisValue < 0 ? -1 : 1) * (polyA_ * absAxisValue * absAxisValue + polyB_ * absAxisValue + polyC_);
     }
 
 } // namespace Detector

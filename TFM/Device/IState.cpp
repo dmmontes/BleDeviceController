@@ -2,6 +2,8 @@
 
 #include "DeviceLogger.h"
 
+#include "Energia.h"
+
 IState::IState(IContext &context) : context_(context)
 {
     LOG_DEBUG("IState::IState()");
@@ -39,4 +41,6 @@ void IState::detectAction(IAction *action)
         return;
     }
     processAction(action->getActionData());
+
+    delay(15); // Delay to avoid send so much data
 }

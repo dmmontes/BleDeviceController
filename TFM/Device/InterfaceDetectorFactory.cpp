@@ -13,6 +13,7 @@ namespace Detector
         LOG_DEBUG("InterfaceDetectorFactory::createButtonDetector()");
         return new InterfaceButtonsDetector();
     }
+
     IDetector *InterfaceDetectorFactory::createJoystickDetector()
     {
         LOG_DEBUG("InterfaceDetectorFactory::createButtonDetector()");

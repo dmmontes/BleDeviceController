@@ -18,7 +18,17 @@ namespace Detector
         virtual bool detectAction(const JoystickState &joystickState, IAction *action) override;
 
     private:
-        typedef int16_t (MouseJoystickDetector::*MapAxisToCursor)(int16_t); ///< Function to map from axis to cursor values
+        /**
+         * @brief Detect if axisValue represents a mouse movement
+         * 
+         * @param axisMove Move value detected in joystick's axis
+         * @return int8_t Mouse movement, from 0 to mouseMoveLimit_
+         */
+        int8_t detectMouseMovement(int16_t axisMove);
+
+        ///< Function to map from axis to cursor values
+        typedef int16_t (MouseJoystickDetector::*MapAxisToCursor)(int16_t);
+
         /**
          * @brief Linear function to map from axis to cursor values
          * 
@@ -35,12 +45,21 @@ namespace Detector
          */
         int16_t PolyMapAxisToCursor(int16_t axisValue);
 
-        MapAxisToCursor mapAxisToCursor_ = &MouseJoystickDetector::linearMapAxisToCursor; ///< Function to map from axis to cursor values
-        const uint16_t middleAxisValue_{512};                                             ///< Middle value of axis (0-1024)
-        const uint16_t axisTreshold_{100};                                                ///< Minimum value to consider a movement in axis
-        const uint16_t axisMoveLimit_{middleAxisValue_ - axisTreshold_};                  ///< Maximum absolute value of axis's movement
-        const uint8_t mouseMoveLimit_{5};                                                 ///< Maximum absolute value of mouse's movement
-        uint8_t buttonState{1};                                                           ///< State of the button (0 press, 1 released)
+        ///< Function to map from axis to cursor values
+        MapAxisToCursor mapAxisToCursor_ = &MouseJoystickDetector::linearMapAxisToCursor;
+
+        // Linear mapping values
+        const uint16_t middleAxisValue_{512};                            ///< Middle value of axis (0-1024)
+        const uint16_t axisTreshold_{100};                               ///< Minimum value for a movement in axis
+        const uint16_t axisMoveLimit_{middleAxisValue_ - axisTreshold_}; ///< Maximum absolute value of axis's movement
+        const uint8_t mouseMoveLimit_{5};                                ///< Maximum absolute value of mouse's movement
+
+        // Polynomial grade 2 mapping values (maps to mouseMoveLimit_)
+        const float polyA_{0.0000257187};  ///< A value in a polynomial function (ax2 + bx + c)
+        const float polyB_{-0.0009004226}; ///< B value in a polynomial function (ax2 + bx + c)
+        const float polyC_{1.148687};      ///< C value in a polynomial function (ax2 + bx + c)
+
+        uint8_t buttonState{1}; ///< State of the button (0 press, 1 released)
     };
 
 } // namespace Detector

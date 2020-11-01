@@ -36,6 +36,10 @@ namespace Detector
                 detectors_[i] = createJoystickDetector();
                 break;
 
+            case DetectorType::ACCELEROMETER:
+                detectors_[i] = createAccelerometerDetector();
+                break;
+
             default:
                 LOG_WARNING("IDetectorFactory::createDetectors() Unknown specified type");
                 break;
@@ -45,7 +49,6 @@ namespace Detector
             {
                 LOG_ERROR("IDetectorFactory::createDetectors() created nullptr detector");
                 freeDetectors();
-                return nullptr;
             }
         }
         return detectors_;

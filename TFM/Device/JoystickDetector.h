@@ -28,8 +28,8 @@ namespace Detector
         struct JoystickState
         {
             uint8_t button; ///< Value of button (0 press, 1 released)
-            int16_t xAxis;  ///< Value of x Axis (0-1024)
-            int16_t yAxis;  ///< Value of x Axis (0-1024)
+            uint16_t xAxis; ///< Value of x Axis (0-1024)
+            uint16_t yAxis; ///< Value of y Axis (0-1024)
         };
 
         /**
@@ -43,8 +43,8 @@ namespace Detector
 
     private:
         const uint8_t buttonPin_ = 5; // the number of the joystick select pin in MKII
-        const uint8_t xAxisPin_ = 2;  // the number of the joystick X-axis analog in MKII
-        const uint8_t yAxisPin_ = 26; // the number of the joystick Y-axis analog in MKII
+        const uint8_t xAxisPin_ = 2;  // the number of the joystick X-axis pin in MKII
+        const uint8_t yAxisPin_ = 26; // the number of the joystick Y-axis pin in MKII
     };
 
 } // namespace Detector

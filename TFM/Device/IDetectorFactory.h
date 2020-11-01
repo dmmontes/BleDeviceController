@@ -25,8 +25,9 @@ namespace Detector
          */
         enum class DetectorType : uint8_t
         {
-            BUTTON,   ///< Button detector
-            JOYSTICK, ///< Joystick detecktor
+            BUTTON,       ///< Button detector
+            JOYSTICK,     ///< Joystick detecktor
+            ACCELEROMETER ///< Accelerometer detector
         };
 
         /**
@@ -61,14 +62,21 @@ namespace Detector
          * 
          * @return DetectorPtr Pointer to Button Detector object
          */
-        virtual DetectorPtr createButtonDetector() = 0;
+        virtual DetectorPtr createButtonDetector() { return nullptr; };
 
         /**
          * @brief Create a Joystick Detector object
          * 
          * @return DetectorPtr Pointer to Joystick Detector object
          */
-        virtual DetectorPtr createJoystickDetector() = 0;
+        virtual DetectorPtr createJoystickDetector() { return nullptr; };
+
+        /**
+         * @brief Create a Accelerometer Detector object
+         * 
+         * @return DetectorPtr Pointer to Accelerometer Detector object
+         */
+        virtual DetectorPtr createAccelerometerDetector() { return nullptr; };
 
     private:
         DetectorPtr *detectors_{nullptr}; ///< Vector of pointers to IDetector

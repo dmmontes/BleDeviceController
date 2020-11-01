@@ -42,6 +42,13 @@ public:
      */
     void moveCursor(int8_t moveX, int8_t moveY);
 
+    /**
+     * @brief Vertical scrolling
+     * 
+     * @param scrollMove units to be scrolled (positivie -> scrolling-up, negative -> scrolling-down)
+     */
+    void scroll(int8_t scrollMove);
+
 private:
     /**
      * @brief Type of mouse click

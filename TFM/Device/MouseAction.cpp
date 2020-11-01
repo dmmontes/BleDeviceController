@@ -32,3 +32,9 @@ void MouseAction::moveCursor(int8_t xMove, int8_t yMove)
     mouseAction[1] = xMove;
     mouseAction[2] = yMove;
 }
+
+void MouseAction::scroll(int8_t scrollMove)
+{
+    LOG_DEBUG(String("MouseAction::scroll() scrollMove: ") + String(scrollMove));
+    mouseAction[3] = scrollMove;
+}
