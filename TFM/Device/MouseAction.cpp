@@ -11,19 +11,19 @@ IAction::ActionData MouseAction::getActionData()
 void MouseAction::rightClick(bool pressed)
 {
     LOG_DEBUG(String("MouseAction::rightClick() pressed: ") + String(pressed));
-    mouseAction[0] = static_cast<int8_t>(pressed ? MouseClick::RIGHT : MouseClick::RELEASED);
+    mouseAction[0] += (pressed ? 1 : -1) * static_cast<int8_t>(MouseClick::RIGHT);
 }
 
 void MouseAction::leftClick(bool pressed)
 {
     LOG_DEBUG(String("MouseAction::leftClick() pressed: ") + String(pressed));
-    mouseAction[0] = static_cast<int8_t>(pressed ? MouseClick::LEFT : MouseClick::RELEASED);
+    mouseAction[0] += (pressed ? 1 : -1) * static_cast<int8_t>(MouseClick::LEFT);
 }
 
 void MouseAction::middleClick(bool pressed)
 {
     LOG_DEBUG(String("MouseAction::middleClick() pressed: ") + String(pressed));
-    mouseAction[0] = static_cast<int8_t>(pressed ? MouseClick::MIDDLE : MouseClick::RELEASED);
+    mouseAction[0] += (pressed ? 1 : -1) * static_cast<int8_t>(MouseClick::MIDDLE);
 }
 
 void MouseAction::moveCursor(int8_t xMove, int8_t yMove)

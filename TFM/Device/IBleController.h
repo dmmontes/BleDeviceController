@@ -4,8 +4,6 @@
 
 #include "BLE.h"
 
-// #include "../../../../Desktop/energia-1.8.10E23-windows/energia-1.8.10E23-windows/energia-1.8.10E23/hardware\energia\msp430\cores\msp430\Energia.h"
-
 namespace Ble
 {
 
