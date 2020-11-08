@@ -27,8 +27,8 @@ namespace Detector
          */
         struct ButtonState
         {
-            uint8_t button1; ///< Value of button 1 (0 press, 1 released)
-            uint8_t button2; ///< Value of button 1 (0 press, 1 released)
+            bool button1Pressed; ///< Indicates if button 1 is pressed or not
+            bool button2Pressed; ///< Indicates if button 2 is pressed or not
         };
 
         /**

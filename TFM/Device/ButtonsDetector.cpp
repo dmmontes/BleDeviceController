@@ -19,7 +19,7 @@ namespace Detector
     {
         LOG_DEBUG("ButtonsDetector::detectAction()");
 
-        ButtonState buttonState{digitalRead(button1Pin_), digitalRead(button2Pin_)};
+        ButtonState buttonState{(digitalRead(button1Pin_) == LOW ? true : false), (digitalRead(button2Pin_) == LOW ? true : false)};
         return detectAction(buttonState, action);
     }
 

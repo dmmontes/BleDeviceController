@@ -124,52 +124,52 @@
 typedef struct
 {
   unsigned char     UUID[2]; // array of UUID bytes, little-endian
-  unsigned char     properties; // bitwise OR of macros: e.g. BLE_READABLE | BLE_WRITABLE
-  const void        *value;
-  uint16_t          valueLen;
-  uint16_t          _handle;
+  unsigned char     properties{0}; // bitwise OR of macros: e.g. BLE_READABLE | BLE_WRITABLE
+  const void        *value{nullptr};
+  uint16_t          valueLen{0};
+  uint16_t          _handle{0};
 } BLE_Descriptor;
 
 typedef struct
 {
   unsigned char     UUID[16]; // array of UUID bytes, little-endian
-  unsigned char     properties; // bitwise OR of macros: e.g. BLE_READABLE | BLE_WRITABLE
+  unsigned char     properties{0}; // bitwise OR of macros: e.g. BLE_READABLE | BLE_WRITABLE
   // Null terminated; internally set permissions to read only so we don't have to worry about the length changing
-  const char        *charDesc;
-  BLE_Descriptor    *descriptor; 
+  const char        *charDesc{nullptr};
+  BLE_Descriptor    *descriptor{nullptr}; 
   /* Energia user should never need to touch these. */
-  unsigned char     _valueFormat;
-  unsigned char     _valueExponent; // only used with integer formats, e.g. value = storedValue*10^valueExponent
-  uint16_t          _handle;
-  void              *_value;
-  bool              _isBigEnd;
-  uint16_t          _valueLen;
-  uint8_t           _CCCD;
-  uint16_t          _CCCDHandle;
-  uint8_t           _UUIDlen;
+  unsigned char     _valueFormat{0};
+  unsigned char     _valueExponent{0}; // only used with integer formats, e.g. value = storedValue*10^valueExponent
+  uint16_t          _handle{0};
+  void              *_value{nullptr};
+  bool              _isBigEnd{false};
+  uint16_t          _valueLen{0};
+  uint8_t           _CCCD{0};
+  uint16_t          _CCCDHandle{0};
+  uint8_t           _UUIDlen{0};
 } BLE_Char;
 
 typedef struct
 {
   unsigned char     UUID[16]; // array of UUID bytes
-  unsigned int      numChars;
-  BLE_Char          **chars;
+  unsigned int      numChars{0};
+  BLE_Char          **chars{nullptr};
   /* Energia user should never need to touch these. */
-  uint16_t          _handle;
-  uint8_t           _UUIDlen;
+  uint16_t          _handle{0};
+  uint8_t           _UUIDlen{0};
 } BLE_Service;
 
 typedef struct
 {
-  unsigned char     advertMode;
-  unsigned int      timeout; // How long to advertise for (in ms), 0 for indefinitely
-  unsigned int      interval; // Advertising Interval (n * 0.625 ms), 0 for 100ms default
+  unsigned char     advertMode{0};
+  unsigned int      timeout{0}; // How long to advertise for (in ms), 0 for indefinitely
+  unsigned int      interval{0}; // Advertising Interval (n * 0.625 ms), 0 for 100ms default
   /* 0x00   Advertising is disabled during connection and will not start after.
    * 0x01   Advertising will continue with non-connectable advertising when connection is established
         There are separate GAP parameters for setting connected advertising interval.
    * 0x02   Advertising will restart with connectable advertising when a connection is terminated.
    */
-  unsigned char      connectedBehavior;
+  unsigned char      connectedBehavior{0};
 } BLE_Advert_Settings;
 
 typedef void (*displayStringFxn_t)(const char string[]);

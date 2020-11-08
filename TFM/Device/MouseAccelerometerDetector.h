@@ -34,8 +34,10 @@ namespace Detector
         uint8_t turnsToScroll_{0};              ///< Turns until next scroll
         const uint8_t turnsBetweenScrolls_{20}; ///< Turns between 2 consecutive scrolls
 
-        const uint16_t scrollDownMoveLimit_{analogReadLimit_ - scrollDownLimit_}; ///< Limit scroll down moving value
-        const uint16_t scrollUpMoveLimit_{analogReadLimit_ - scrollUpLimit_};     ///< Limit scroll up moving value
+        ///< Limit scroll down moving value
+        const uint16_t scrollDownMoveLimit_{static_cast<uint16_t>(analogReadLimit_ - scrollDownLimit_)};
+        ///< Limit scroll up moving value
+        const uint16_t scrollUpMoveLimit_{static_cast<uint16_t>(analogReadLimit_ - scrollUpLimit_)};
     };
 
 } // namespace Detector

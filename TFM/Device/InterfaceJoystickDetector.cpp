@@ -8,9 +8,10 @@
 namespace Detector
 {
 
-    bool InterfaceJoystickDetector::detectAction(const JoystickState &joystickState, IAction *action)
+    bool InterfaceJoystickDetector::detectAction(const JoystickState &joystickState, IAction *)
     {
-        LOG_DEBUG(String("InterfaceJoystickDetector::detectAction() button: ") + String(joystickState.button) + String(", xAxis: ") + String(joystickState.xAxis) + String(", yAxis: ") + String(joystickState.yAxis));
+        LOG_DEBUG(String("InterfaceJoystickDetector::detectAction() button: ") + String(joystickState.buttonPressed) + String(", xAxis: ") + String(joystickState.xAxis) + String(", yAxis: ") + String(joystickState.yAxis));
+
         return true;
     }
 

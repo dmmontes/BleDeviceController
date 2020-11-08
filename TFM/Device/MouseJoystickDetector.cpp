@@ -18,6 +18,7 @@ namespace Detector
             break;
         case IDetector::DetectionType::QUALITY:
             mapAxisToCursor_ = &MouseJoystickDetector::PolyMapAxisToCursor;
+            break;
         default:
             LOG_WARNING("MouseJoystickDetector::setDetectionType() unknown DetectionType");
             break;
@@ -26,16 +27,16 @@ namespace Detector
 
     bool MouseJoystickDetector::detectAction(const JoystickState &joystickState, IAction *action)
     {
-        LOG_DEBUG(String("MouseJoystickDetector::detectAction() button: ") + String(joystickState.button) + String(", xAxis: ") + String(joystickState.xAxis) + String(", yAxis: ") + String(joystickState.yAxis));
+        LOG_DEBUG(String("MouseJoystickDetector::detectAction() button: ") + String(joystickState.buttonPressed) + String(", xAxis: ") + String(joystickState.xAxis) + String(", yAxis: ") + String(joystickState.yAxis));
 
         bool actionDetected{false};
 
         // Read the value of button
-        if (buttonState != joystickState.button)
+        if (buttonPressed_ != joystickState.buttonPressed)
         {
             LOG_DEBUG("Button changed");
-            buttonState = joystickState.button;
-            static_cast<MouseAction *>(action)->middleClick(buttonState == 0);
+            buttonPressed_ = joystickState.buttonPressed;
+            static_cast<MouseAction *>(action)->middleClick(buttonPressed_ == 0);
             actionDetected = true;
         }
 

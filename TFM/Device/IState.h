@@ -21,6 +21,11 @@ public:
     IState(IContext &context);
 
     /**
+     * @brief Destroy the IState object 
+     */
+    virtual ~IState() = default;
+
+    /**
      * @brief Add a vector of pointers to detectors (of user's actions) to the general process 
      * 
      * @param detectors vector of pointers to detectors 

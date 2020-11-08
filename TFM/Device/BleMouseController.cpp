@@ -83,7 +83,8 @@ namespace Ble
     {
         LOG_DEBUG("BleMouseController::sendData()");
 
-        ble.writeValue(&inputReportCharasteristic_, data, dataSize);
+        int returnCode = ble.writeValue(&inputReportCharasteristic_, data, dataSize);
+        return (returnCode == 0 ? true : false);
     }
 
     void BleMouseController::configureServices()

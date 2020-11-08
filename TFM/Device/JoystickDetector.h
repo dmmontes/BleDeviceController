@@ -27,9 +27,9 @@ namespace Detector
          */
         struct JoystickState
         {
-            uint8_t button; ///< Value of button (0 press, 1 released)
-            uint16_t xAxis; ///< Value of x Axis (0-1024)
-            uint16_t yAxis; ///< Value of y Axis (0-1024)
+            bool buttonPressed; ///< Indicates if button is pressed
+            uint16_t xAxis;     ///< Value of x Axis (0-1024)
+            uint16_t yAxis;     ///< Value of y Axis (0-1024)
         };
 
         /**

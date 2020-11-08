@@ -17,8 +17,8 @@ namespace Detector
         virtual bool detectAction(const ButtonState &buttonState, IAction *action) override;
 
     private:
-        uint8_t button1State_{1}; ///< State of the button 1 (0 press, 1 released)
-        uint8_t button2State_{1}; ///< State of the button 2 (0 press, 1 released)
+        bool button1Pressed_{0}; ///< State of the button 1 (0 press, 1 released)
+        bool button2Pressed_{0}; ///< State of the button 2 (0 press, 1 released)
     };
 
 } // namespace Detector

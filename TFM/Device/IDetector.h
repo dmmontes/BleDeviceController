@@ -22,11 +22,16 @@ namespace Detector
         };
 
         /**
+         * @brief Destroy the IDetector object
+         */
+        virtual ~IDetector() = default;
+
+        /**
          * @brief Set the Detection Type of detecotr
          * 
-         * @param detectionType Type of detection
+         * @param DetectionType Type of detection
          */
-        virtual void setDetectionType(DetectionType detectionType) {}
+        virtual void setDetectionType(DetectionType) {}
 
         /**
          * @brief General process of the device, detecting actions performed by user 

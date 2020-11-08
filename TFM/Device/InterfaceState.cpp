@@ -14,7 +14,7 @@ InterfaceState::InterfaceState(IContext &context) : IState(context)
     context_.setDetectors(detectors, numDetectors);
 }
 
-void InterfaceState::processAction(const IAction::ActionData &actionData)
+void InterfaceState::processAction(const IAction::ActionData &)
 {
     LOG_DEBUG("InterfaceState::processAction()");
     screen_.draw(Screen::ScreenAction::NONE);

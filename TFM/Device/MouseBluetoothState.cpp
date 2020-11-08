@@ -16,5 +16,10 @@ MouseBluetoothState::MouseBluetoothState(IContext &context, Ble::IBleController 
 void MouseBluetoothState::processAction(const IAction::ActionData &actionData)
 {
     LOG_DEBUG("MouseBluetoothState::processAction()");
-    bleController_.sendData(actionData.data, actionData.dataSize);
+    bool success = bleController_.sendData(actionData.data, actionData.dataSize);
+
+    if (!success)
+    {
+        LOG_ERROR(String("MouseBluetoothState::processAction() sending Bluetooth data, errorCode: ") + String(success));
+    }
 }

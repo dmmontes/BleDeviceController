@@ -9,25 +9,25 @@ namespace Detector
 
     bool MouseButtonsDetector::detectAction(const ButtonState &buttonState, IAction *action)
     {
-        LOG_DEBUG(String("MouseButtonsDetector::detectAction() button1: ") + String(buttonState.button1) + String(", button 2: ") + String(buttonState.button2));
+        LOG_DEBUG(String("MouseButtonsDetector::detectAction() button1Pressed: ") + String(buttonState.button1Pressed) + String(", button 2: ") + String(buttonState.button2Pressed));
 
         bool actionDetected{false};
 
         // Read the value of button 1
-        if (button1State_ != buttonState.button1)
+        if (button1Pressed_ != buttonState.button1Pressed)
         {
             LOG_DEBUG("Button 1 changed");
-            button1State_ = buttonState.button1;
-            static_cast<MouseAction *>(action)->leftClick(button1State_ == 0);
+            button1Pressed_ = buttonState.button1Pressed;
+            static_cast<MouseAction *>(action)->leftClick(button1Pressed_);
             actionDetected = true;
         }
 
         // Read the value of button 2
-        if (button2State_ != buttonState.button2)
+        if (button2Pressed_ != buttonState.button2Pressed)
         {
             LOG_DEBUG("Button 2 changed");
-            button2State_ = buttonState.button2;
-            static_cast<MouseAction *>(action)->rightClick(button2State_ == 0);
+            button2Pressed_ = buttonState.button2Pressed;
+            static_cast<MouseAction *>(action)->rightClick(button2Pressed_);
             actionDetected = true;
         }
         return actionDetected;

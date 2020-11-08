@@ -7,9 +7,10 @@
 namespace Detector
 {
 
-    bool InterfaceButtonsDetector::detectAction(const ButtonState &buttonState, IAction *action)
+    bool InterfaceButtonsDetector::detectAction(const ButtonState &buttonState, IAction *)
     {
-        LOG_DEBUG(String("InterfaceButtonsDetector::detectAction() button1: ") + String(buttonState.button1) + String(", button 2: ") + String(buttonState.button2));
+        LOG_DEBUG(String("InterfaceButtonsDetector::detectAction() button1: ") + String(buttonState.button1Pressed) + String(", button 2: ") + String(buttonState.button2Pressed));
+
         return true;
     }
 

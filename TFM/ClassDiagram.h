@@ -119,11 +119,20 @@ class Screen
 InterfaceState *-- Screen
 Screen -- ScreenAction
 
+
+enum DetectionType
+{
+  NORMAL
+  QUALITY
+}
+
 interface IDetector
 {
     virtual detectAction(IAction* action) = 0
+    virtual void setDetectionType(DetectionType detectionType)
 }
 IState "1" *-left- "*" IDetector
+IDetector -left- DetectionType
 
 class ButtonDetector
 {
