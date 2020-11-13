@@ -64,7 +64,8 @@ private:
         ALL = 31
     };
 
-    int8_t mouseAction[5]; ///< Data representation of a mouse action
+    int8_t previousMouseAction_[5]; ///< Data representation of the previous mouse action
+    int8_t mouseAction_[5];         ///< Data representation of a mouse action
 };
 
 #endif //MOUSE_ACTION

@@ -14,11 +14,11 @@ namespace Detector
     {
     protected:
         ///< Implementation of virtual methods from ButtonsDetector
-        virtual bool detectAction(const ButtonState &buttonState, IAction *action) override;
+        virtual bool checkAction(const ButtonState &buttonState, IAction *action) override;
 
     private:
-        bool button1Pressed_{0}; ///< State of the button 1 (0 press, 1 released)
-        bool button2Pressed_{0}; ///< State of the button 2 (0 press, 1 released)
+        bool button1Pressed_{0}; ///< Indicates if button 1 is pressed or not
+        bool button2Pressed_{0}; ///< Indicates if button 2 is pressed or not
     };
 
 } // namespace Detector

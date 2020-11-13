@@ -13,8 +13,16 @@ namespace Detector
     class AccelerometerDetector : public IDetector
     {
     public:
+        /**
+         * @brief Construct a new Accelerometer Detector object
+         * 
+         * @param action[out] action to be filled by detector
+         * @return bool Indicates if an action has been detected
+         */
+        AccelerometerDetector(uint8_t turnsBetweenDetections = 0, uint8_t turnsToDetect = 0);
+
         ///< Implementation of virtual methods from IDetector
-        virtual bool detectAction(IAction *action) override;
+        virtual bool checkAction(IAction *action) override;
 
     protected:
         /**
@@ -34,7 +42,7 @@ namespace Detector
          * @param action[out] action to be filled by detector
          * @return bool Indicates if an action has been detected
          */
-        virtual bool detectAction(const AccelerometerState &accelerometerState, IAction *action) = 0;
+        virtual bool checkAction(const AccelerometerState &accelerometerState, IAction *action) = 0;
 
     private:
         const uint8_t xAxisPin_ = 23; // the number of the accelerometer X-axis pin in MKII

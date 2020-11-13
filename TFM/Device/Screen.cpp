@@ -2,7 +2,22 @@
 
 #include "DeviceLogger.h"
 
-void Screen::draw(ScreenAction action)
+Screen::Screen()
+    : resetPin_{17},
+      dataCommandPin_{31},
+      chipSelectPin_{13},
+      backlightPin_{39},
+      screen_{resetPin_, dataCommandPin_, chipSelectPin_, backlightPin_}
 {
-    LOG_DEBUG(String("Screen::draw() action :") + String(static_cast<uint8_t>(action)));
-}
+    LOG_DEBUG("Screen::Screen()");
+
+    screen_.begin();
+};
+
+Screen::~Screen()
+{
+    LOG_DEBUG("Screen::~Screen()");
+
+    screen_.setDisplay(false);
+    screen_.setBacklight(false);
+};

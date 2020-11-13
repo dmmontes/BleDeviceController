@@ -34,12 +34,32 @@ namespace Detector
         virtual void setDetectionType(DetectionType) {}
 
         /**
-         * @brief General process of the device, detecting actions performed by user 
+         * @brief Detects actions performed by user if detector doesn't have to wait turns until next detection
          * 
          * @param action[out] action to be filled by detector
          * @return bool Indicates if an action has been detected
          */
-        virtual bool detectAction(IAction *action) = 0;
+        bool detectAction(IAction *action);
+
+    protected:
+        /**
+         * @brief Construct a new IDetector object
+         * 
+         * @param turnsBetweenDetections Turns between 2 consecutive detections
+         * @param turnsToDetect Turns until next detections
+         */
+        IDetector(uint8_t turnsBetweenDetections = 0, uint8_t turnsToDetect = 0);
+
+        /**
+         * @brief Detector check if an action has been performed by the user
+         * 
+         * @param action[out] action to be filled by detector
+         * @return bool Indicates if an action has been detected
+         */
+        virtual bool checkAction(IAction *action) = 0;
+
+        uint8_t turnsToDetect_{0};          ///< Turns until next detections
+        uint8_t turnsBetweenDetections_{0}; ///< Turns between 2 consecutive detections
     };
 
     typedef IDetector *DetectorPtr; ///< Vector of pointers to IDetector objects

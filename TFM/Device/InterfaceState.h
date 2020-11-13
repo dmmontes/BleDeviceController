@@ -3,7 +3,7 @@
 #define INTERFACE_STATE
 
 #include "IState.h"
-#include "Screen.h"
+#include "InterfaceScreen.h"
 
 /**
  * @brief Represents an interface state where device shows in a screen an option menu
@@ -24,7 +24,14 @@ protected:
     virtual bool isDetectionEnabled() override;
 
 private:
-    Screen screen_; ///< Screen of the device. Draw in the display a menu of options
+    /**
+     * @brief Callback to be called whan an option is selected. It changes the state to a new one
+     * 
+     * @param selectedOption option selected
+     */
+    void selectedOption(uint8_t selectedOption);
+
+    InterfaceScreen screen_; ///< Screen of the device. Draw in the display a menu of options
 };
 
 #endif //INTERFACE_STATE

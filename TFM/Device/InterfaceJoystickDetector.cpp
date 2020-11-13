@@ -8,11 +8,31 @@
 namespace Detector
 {
 
-    bool InterfaceJoystickDetector::detectAction(const JoystickState &joystickState, IAction *)
+    InterfaceJoystickDetector::InterfaceJoystickDetector()
+        : JoystickDetector(200, 0) //Times between detections = 200, Times to detect = 0
     {
-        LOG_DEBUG(String("InterfaceJoystickDetector::detectAction() button: ") + String(joystickState.buttonPressed) + String(", xAxis: ") + String(joystickState.xAxis) + String(", yAxis: ") + String(joystickState.yAxis));
+        LOG_DEBUG("InterfaceJoystickDetector::InterfaceJoystickDetector()");
+    }
 
-        return true;
+    bool InterfaceJoystickDetector::checkAction(const JoystickState &joystickState, IAction *action)
+    {
+        LOG_DEBUG(String("InterfaceJoystickDetector::checkAction() button: ") + String(joystickState.buttonPressed) + String(", xAxis: ") + String(joystickState.xAxis) + String(", yAxis: ") + String(joystickState.yAxis));
+
+        bool actionDetected{false};
+
+        if (joystickState.yAxis > moveUpLimit_)
+        {
+            LOG_DEBUG("InterfaceJoystickDetector::checkAction() Move Up");
+            static_cast<InterfaceAction *>(action)->moveUp();
+            actionDetected = true;
+        }
+        else if (joystickState.yAxis < moveDownLimit_)
+        {
+            LOG_DEBUG("InterfaceJoystickDetector::checkAction() Move Down");
+            static_cast<InterfaceAction *>(action)->moveDown();
+            actionDetected = true;
+        }
+        return actionDetected;
     }
 
 } // namespace Detector

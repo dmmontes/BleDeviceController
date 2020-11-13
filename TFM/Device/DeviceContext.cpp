@@ -12,7 +12,6 @@
 DeviceContext::DeviceContext(Ble::BleControllerFactory &bleControllerFactory) : bleControllerFactory_(bleControllerFactory)
 {
     LOG_DEBUG("DeviceContext::DeviceContext()");
-    changeState(DeviceContext::StateType::INTERFACE);
 }
 
 DeviceContext::~DeviceContext()

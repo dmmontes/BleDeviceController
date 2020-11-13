@@ -12,9 +12,15 @@ namespace Detector
      */
     class MouseAccelerometerDetector : public AccelerometerDetector
     {
+    public:
+        /**
+         * @brief Construct a new Mouse Accelerometer Detector object
+         */
+        MouseAccelerometerDetector();
+
     protected:
         ///< Implementation of virtual methods from JoystickDetector
-        virtual bool detectAction(const AccelerometerState &accelerometerState, IAction *action) override;
+        virtual bool checkAction(const AccelerometerState &accelerometerState, IAction *action) override;
 
     private:
         /**
@@ -30,9 +36,6 @@ namespace Detector
         const uint16_t scrollDownLimit_{500};  ///< Limit value in yAxis to considere a scroll down movement
         const uint16_t scrollUpLimit_{500};    ///< Limit value in zAxis to considere a scroll up movement
         const uint8_t mouseScrollLimit_{5};    ///< Limit mouse value scrolling down/up
-
-        uint8_t turnsToScroll_{0};              ///< Turns until next scroll
-        const uint8_t turnsBetweenScrolls_{20}; ///< Turns between 2 consecutive scrolls
 
         ///< Limit scroll down moving value
         const uint16_t scrollDownMoveLimit_{static_cast<uint16_t>(analogReadLimit_ - scrollDownLimit_)};

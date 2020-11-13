@@ -104,7 +104,7 @@ class InterfaceState
 }
 IState <|-- InterfaceState
 
-enum ScreenAction
+enum InterfaceMoves
 {
   NONE
   UP
@@ -114,10 +114,10 @@ enum ScreenAction
 
 class Screen
 {
-    + void draw (ScreenAction action)
+    + void draw (InterfaceMoves action)
 }
 InterfaceState *-- Screen
-Screen -- ScreenAction
+Screen -- InterfaceMoves
 
 
 enum DetectionType
@@ -128,7 +128,8 @@ enum DetectionType
 
 interface IDetector
 {
-    virtual detectAction(IAction* action) = 0
+    detectAction(IAction* action)
+    virtual checkAction(IAction* action) = 0
     virtual void setDetectionType(DetectionType detectionType)
 }
 IState "1" *-left- "*" IDetector

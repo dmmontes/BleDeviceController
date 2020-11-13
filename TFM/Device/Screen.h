@@ -1,28 +1,29 @@
 #ifndef SCREEN
 #define SCREEN
 
-#include <cstdint>
+#include "Screen_HX8353E.h"
 
 /**
- * @brief Screen of the device. Draw in the display a menu of options
+ * @brief Screen of the device
  */
 class Screen
 {
-public:
-    enum class ScreenAction : uint8_t
-    {
-        NONE,  ///< No action
-        UP,    ///< Up action
-        DOWN,  ///< Down action
-        SELECT ///< Select action
-    };
+protected:
+    /**
+     * @brief Construct a new Screen object 
+     */
+    Screen();
 
     /**
-     * @brief  Draw in the display a menu of options
-     * 
-     * @param action Action done by the user
+     * @brief Destroy the Screen object 
      */
-    void draw(ScreenAction action);
+    ~Screen();
+
+    const uint8_t resetPin_;       ///< Pin used for reset action
+    const uint8_t dataCommandPin_; ///< Pin used for data command
+    const uint8_t chipSelectPin_;  ///< Pin used for chip select
+    const uint8_t backlightPin_;   ///< Pin used for backlight
+    Screen_HX8353E screen_;        ///< Screen to be used
 };
 
 #endif //SCREEN

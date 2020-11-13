@@ -15,11 +15,14 @@ namespace Detector
     public:
         /**
          * @brief Construct a new Buttons Detector object
+         * 
+         * @param action[out] action to be filled by detector
+         * @return bool Indicates if an action has been detected
          */
-        ButtonsDetector();
+        ButtonsDetector(uint8_t turnsBetweenDetections = 0, uint8_t turnsToDetect = 0);
 
         ///< Implementation of virtual methods from IDetector
-        virtual bool detectAction(IAction *action) override;
+        virtual bool checkAction(IAction *action) override;
 
     protected:
         /**
@@ -38,7 +41,7 @@ namespace Detector
          * @param action[out] action to be filled by detector
          * @return bool Indicates if an action has been detected
          */
-        virtual bool detectAction(const ButtonState &buttonState, IAction *action) = 0;
+        virtual bool checkAction(const ButtonState &buttonState, IAction *action) = 0;
 
     private:
         const uint8_t button1Pin_ = 33; ///< Pin number variable for Button 1 in MKII

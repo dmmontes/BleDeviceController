@@ -15,11 +15,14 @@ namespace Detector
     public:
         /**
          * @brief Construct a new Joystick Detector object
+         * 
+         * @param action[out] action to be filled by detector
+         * @return bool Indicates if an action has been detected
          */
-        JoystickDetector();
+        JoystickDetector(uint8_t turnsBetweenDetections = 0, uint8_t turnsToDetect = 0);
 
         ///< Implementation of virtual methods from IDetector
-        virtual bool detectAction(IAction *action) override;
+        virtual bool checkAction(IAction *action) override;
 
     protected:
         /**
@@ -39,7 +42,7 @@ namespace Detector
          * @param action[out] action to be filled by detector
          * @return bool Indicates if an action has been detected
          */
-        virtual bool detectAction(const JoystickState &joystickState, IAction *action) = 0;
+        virtual bool checkAction(const JoystickState &joystickState, IAction *action) = 0;
 
     private:
         const uint8_t buttonPin_ = 5; // the number of the joystick select pin in MKII

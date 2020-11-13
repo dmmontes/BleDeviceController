@@ -15,7 +15,7 @@ namespace Detector
     protected:
         ///< Implementation of virtual methods from JoystickDetector
         virtual void setDetectionType(IDetector::DetectionType detectionType) override;
-        virtual bool detectAction(const JoystickState &joystickState, IAction *action) override;
+        virtual bool checkAction(const JoystickState &joystickState, IAction *action) override;
 
     private:
         /**

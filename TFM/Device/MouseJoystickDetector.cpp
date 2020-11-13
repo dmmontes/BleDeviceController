@@ -25,9 +25,9 @@ namespace Detector
         }
     }
 
-    bool MouseJoystickDetector::detectAction(const JoystickState &joystickState, IAction *action)
+    bool MouseJoystickDetector::checkAction(const JoystickState &joystickState, IAction *action)
     {
-        LOG_DEBUG(String("MouseJoystickDetector::detectAction() button: ") + String(joystickState.buttonPressed) + String(", xAxis: ") + String(joystickState.xAxis) + String(", yAxis: ") + String(joystickState.yAxis));
+        LOG_DEBUG(String("MouseJoystickDetector::checkAction() button: ") + String(joystickState.buttonPressed) + String(", xAxis: ") + String(joystickState.xAxis) + String(", yAxis: ") + String(joystickState.yAxis));
 
         bool actionDetected{false};
 
@@ -45,10 +45,10 @@ namespace Detector
         int8_t yMouseMove{detectMouseMovement(middleAxisValue_ - joystickState.yAxis)};
         if (xMouseMove != 0 || yMouseMove != 0)
         {
+            static_cast<MouseAction *>(action)->moveCursor(xMouseMove, yMouseMove);
             actionDetected = true;
         }
 
-        static_cast<MouseAction *>(action)->moveCursor(xMouseMove, yMouseMove);
         return actionDetected;
     }
 

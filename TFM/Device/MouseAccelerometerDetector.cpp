@@ -8,33 +8,29 @@
 namespace Detector
 {
 
-    bool MouseAccelerometerDetector::detectAction(const AccelerometerState &accelerometerState, IAction *action)
+    MouseAccelerometerDetector::MouseAccelerometerDetector()
+        : AccelerometerDetector(20, 0) //Times between detections = 20, Times to detect = 0
     {
-        LOG_DEBUG(String("MouseAccelerometerDetector::detectAction() xAxis: ") + String(accelerometerState.xAxis) + String(", yAxis: ") + String(accelerometerState.yAxis) + String(", zAxis: ") + String(accelerometerState.zAxis));
+        LOG_DEBUG("MouseAccelerometerDetector::MouseAccelerometerDetector()");
+    }
+
+    bool MouseAccelerometerDetector::checkAction(const AccelerometerState &accelerometerState, IAction *action)
+    {
+        LOG_DEBUG(String("MouseAccelerometerDetector::checkAction() xAxis: ") + String(accelerometerState.xAxis) + String(", yAxis: ") + String(accelerometerState.yAxis) + String(", zAxis: ") + String(accelerometerState.zAxis));
 
         bool actionDetected{false};
-        int8_t mouseScroll{0};
 
-        if (turnsToScroll_ == 0)
+        // Detecting scroll. Note scroll down is negative value
+        int8_t mouseScroll = detectScroll(scrollUpLimit_ - accelerometerState.zAxis, scrollUpMoveLimit_);
+        if (mouseScroll == 0)
         {
-            // Detecting scroll. Note scroll down is negative value
-            mouseScroll = detectScroll(scrollUpLimit_ - accelerometerState.zAxis, scrollUpMoveLimit_);
-            if (mouseScroll == 0)
-            {
-                mouseScroll = -detectScroll(accelerometerState.yAxis - scrollDownLimit_, scrollDownMoveLimit_);
-            }
-
-            if (mouseScroll != 0)
-            {
-                turnsToScroll_ = turnsBetweenScrolls_;
-                actionDetected = true;
-            }
-        }
-        else
-        {
-            --turnsToScroll_;
+            mouseScroll = -detectScroll(accelerometerState.yAxis - scrollDownLimit_, scrollDownMoveLimit_);
         }
 
+        if (mouseScroll != 0)
+        {
+            actionDetected = true;
+        }
         static_cast<MouseAction *>(action)->scroll(mouseScroll);
         return actionDetected;
     }
