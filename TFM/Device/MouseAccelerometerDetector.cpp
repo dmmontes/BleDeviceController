@@ -9,7 +9,7 @@ namespace Detector
 {
 
     MouseAccelerometerDetector::MouseAccelerometerDetector()
-        : AccelerometerDetector(20, 0) //Times between detections = 20, Times to detect = 0
+        : AccelerometerDetector(30) //Time between detections = 30 ms
     {
         LOG_DEBUG("MouseAccelerometerDetector::MouseAccelerometerDetector()");
     }

@@ -2,11 +2,13 @@
 
 #include "DeviceLogger.h"
 
+#include "Energia.h"
+
 namespace Detector
 {
 
-    IDetector::IDetector(uint8_t turnsBetweenDetections /*= 0*/, uint8_t turnsToDetect /*= 0*/)
-        : turnsToDetect_(turnsToDetect), turnsBetweenDetections_(turnsBetweenDetections)
+    IDetector::IDetector(unsigned long timeBetweenDetections /*= 0*/)
+        : timeToDetect_(0), timeBetweenDetections_(timeBetweenDetections)
     {
         LOG_DEBUG("IDetector::IDetector()");
     }
@@ -17,18 +19,15 @@ namespace Detector
         bool actionDetected{false};
 
         // Check if it is turn to detect
-        if (turnsToDetect_ == 0)
+        unsigned long actualTime = millis();
+        if (timeToDetect_ < actualTime)
         {
             //If an action is detected resest the "turnsToDetect"
             actionDetected = checkAction(action);
             if (actionDetected)
             {
-                turnsToDetect_ = turnsBetweenDetections_;
+                timeToDetect_ = actualTime + timeBetweenDetections_;
             }
-        }
-        else
-        {
-            --turnsToDetect_;
         }
         return actionDetected;
     }

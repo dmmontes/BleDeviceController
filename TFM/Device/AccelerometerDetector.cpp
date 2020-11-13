@@ -6,8 +6,8 @@
 
 namespace Detector
 {
-    AccelerometerDetector::AccelerometerDetector(uint8_t turnsBetweenDetections /*= 0*/, uint8_t turnsToDetect /*= 0*/)
-        : IDetector(turnsBetweenDetections, turnsToDetect)
+    AccelerometerDetector::AccelerometerDetector(unsigned long timeBetweenDetections /*= 0*/)
+        : IDetector(timeBetweenDetections)
     {
         LOG_DEBUG("AccelerometerDetector::AccelerometerDetector()");
     }

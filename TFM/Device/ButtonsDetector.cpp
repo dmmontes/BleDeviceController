@@ -7,8 +7,8 @@
 namespace Detector
 {
 
-    ButtonsDetector::ButtonsDetector(uint8_t turnsBetweenDetections /*= 0*/, uint8_t turnsToDetect /*= 0*/)
-        : IDetector(turnsBetweenDetections, turnsToDetect)
+    ButtonsDetector::ButtonsDetector(unsigned long timeBetweenDetections /*= 0*/)
+        : IDetector(timeBetweenDetections)
     {
         LOG_DEBUG("ButtonsDetector::ButtonsDetector()");
 

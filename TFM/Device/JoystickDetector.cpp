@@ -7,8 +7,8 @@
 namespace Detector
 {
 
-    JoystickDetector::JoystickDetector(uint8_t turnsBetweenDetections /*= 0*/, uint8_t turnsToDetect /*= 0*/)
-        : IDetector(turnsBetweenDetections, turnsToDetect)
+    JoystickDetector::JoystickDetector(unsigned long timeBetweenDetections /*= 0*/)
+        : IDetector(timeBetweenDetections)
     {
         LOG_DEBUG("JoystickDetector::JoystickDetector()");
 

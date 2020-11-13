@@ -16,10 +16,9 @@ namespace Detector
         /**
          * @brief Construct a new Buttons Detector object
          * 
-         * @param action[out] action to be filled by detector
-         * @return bool Indicates if an action has been detected
+         * @param timeBetweenDetections Turns between 2 consecutive detections
          */
-        ButtonsDetector(uint8_t turnsBetweenDetections = 0, uint8_t turnsToDetect = 0);
+        ButtonsDetector(unsigned long timeBetweenDetections = 0);
 
         ///< Implementation of virtual methods from IDetector
         virtual bool checkAction(IAction *action) override;

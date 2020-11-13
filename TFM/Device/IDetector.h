@@ -45,10 +45,9 @@ namespace Detector
         /**
          * @brief Construct a new IDetector object
          * 
-         * @param turnsBetweenDetections Turns between 2 consecutive detections
-         * @param turnsToDetect Turns until next detections
+         * @param timeBetweenDetections Turns between 2 consecutive detections
          */
-        IDetector(uint8_t turnsBetweenDetections = 0, uint8_t turnsToDetect = 0);
+        IDetector(unsigned long timeBetweenDetections = 0);
 
         /**
          * @brief Detector check if an action has been performed by the user
@@ -58,8 +57,8 @@ namespace Detector
          */
         virtual bool checkAction(IAction *action) = 0;
 
-        uint8_t turnsToDetect_{0};          ///< Turns until next detections
-        uint8_t turnsBetweenDetections_{0}; ///< Turns between 2 consecutive detections
+        unsigned long timeToDetect_;          ///< Time until next detections
+        unsigned long timeBetweenDetections_; ///< Time between 2 consecutive detections in milliseconds
     };
 
     typedef IDetector *DetectorPtr; ///< Vector of pointers to IDetector objects
