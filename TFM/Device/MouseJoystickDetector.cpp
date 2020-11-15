@@ -8,6 +8,12 @@
 namespace Detector
 {
 
+    MouseJoystickDetector::MouseJoystickDetector()
+        : JoystickDetector(15) //Time between detections = 15 ms
+    {
+        LOG_DEBUG("MouseJoystickDetector::MouseJoystickDetector()");
+    }
+
     void MouseJoystickDetector::setDetectionType(IDetector::DetectionType detectionType)
     {
         LOG_DEBUG(String("MouseJoystickDetector::setDetectionType() detectionType: ") + String(static_cast<uint8_t>(detectionType)));

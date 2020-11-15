@@ -41,6 +41,4 @@ void IState::detectAction(IAction *action)
         return;
     }
     processAction(action->getActionData());
-
-    delay(15); // Delay to avoid send so much data
 }

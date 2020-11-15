@@ -83,8 +83,54 @@ class BluetoothState
 {
 
 }
-IState <|-down- BluetoothState
+IState <|-right- BluetoothState
+IState <|-down- InterfaceState
 BluetoothState -right-> IBleController
+
+Interface IBluetoothConnectionStateMachine
+{
+    + virtual void changeState(State newState, BluetoothScreen *screen) = 0;
+}
+
+Interface IBluetoothConnectionState
+{
+    + void handleState(bool connected)
+    + bool isConnected()
+}
+IBluetoothConnectionState -left-> BluetoothScreen
+
+class BluetoothConnectionStateMachine
+{
+    + void handleState(bool connected)
+    + bool isConnected()
+}
+IBluetoothConnectionStateMachine <|-down- BluetoothConnectionStateMachine
+BluetoothConnectionStateMachine -- IBluetoothConnectionState
+BluetoothState --> BluetoothConnectionStateMachine
+
+class BluetoothConnectionStateSearching
+{
+
+}
+IBluetoothConnectionState <|-- BluetoothConnectionStateSearching
+
+class BluetoothConnectionStateConnecting
+{
+
+}
+IBluetoothConnectionState <|-- BluetoothConnectionStateConnecting
+
+class BluetoothConnectionStatePairing
+{
+
+}
+IBluetoothConnectionState <|-- BluetoothConnectionStatePairing
+
+class BluetoothConnectionStateConnected
+{
+
+}
+IBluetoothConnectionState <|-- BluetoothConnectionStateConnected
 
 class MouseBluetoothState
 {
@@ -102,22 +148,63 @@ class InterfaceState
 {
 
 }
-IState <|-- InterfaceState
+InterfaceState --> InterfaceScreen
 
-enum InterfaceMoves
+class Message
 {
-  NONE
-  UP
-  DOWN
-  SELECT
+    + String text
+    + uint16_t yPos
+    + uint8_t fontSize
+    + bool fontSolid
+    + uint16_t colour
+}
+
+class Box
+{
+    + uint16_t xPos
+    + uint16_t yPos
+    + uint16_t xSize
+    + uint16_t ySize
+    + uint16_t colour
+    + bool fillBox
+    + String text
+    + uint16_t textColour
+}
+
+class Image
+{
+    + uint16_t xPos
+    + uint16_t yPos
+    + uint16_t xSize
+    + uint16_t ySize
+    + uint16_t *picture
 }
 
 class Screen
 {
-    + void draw (InterfaceMoves action)
+    + void drawMessage(const Message &message)
+    + void removeMessage(const Message &message, uint16_t colour)
+    + void drawBox(const Box &box)
+    + void drawImage(const Image &image)
 }
-InterfaceState *-- Screen
-Screen -- InterfaceMoves
+Screen -down- Image
+Screen -down- Box
+Screen -down- Message
+
+class InterfaceScreen
+{
+    void draw(int8_t action);
+}
+Screen <|-up- InterfaceScreen
+
+class BluetoothScreen
+{
+    + void drawSearchingMessage()
+    + void drawPinVerification(uint32_t pin)
+    + void removePinVerification()
+    + void drawConnectionCorrect()
+}
+Screen <|-up- BluetoothScreen
 
 
 enum DetectionType
@@ -243,10 +330,19 @@ interface IAction
 }
 IAction -up- ActionData
 
+enum InterfaceMoves
+{
+  NONE
+  UP
+  DOWN
+  SELECT
+}
+
 class InterfaceAction
 {
 }
 IAction <|-down- InterfaceAction
+InterfaceAction -- InterfaceMoves
 
 class MouseAction
 {

@@ -31,6 +31,9 @@ static void numCmpInterruptDifferent(void);
 /* Helper function for posting AP_ERROR, setting error, and logging. */
 static void apPostError(uint8_t status, const char errMsg[]);
 
+/* Callback to send the pairing result */
+setPairingResultFxn_t setPairingResult{nullptr};
+
 /*
  * Must be called in the main loop to poll for events that must be
  * handled outside of the NPI task. Required for sending NPI messages
@@ -126,6 +129,7 @@ void BLE::handleNumCmp(snpAuthenticationEvt_t *evt)
     displayStringFxn("Check if equal:");
     displayUIntFxn(evt->numCmp);
     displayStringFxn("\n");
+    setPairingResult = setPairingResultFxn;
   }
   else if (Serial)
   {
@@ -147,10 +151,10 @@ void BLE::handleNumCmp(snpAuthenticationEvt_t *evt)
     {
       Serial.println("Press button1 if equal, button2 if not.");
     }
-    pinMode(PUSH1, INPUT_PULLUP);
-    attachInterrupt(PUSH1, numCmpInterruptEqual, FALLING);
-    pinMode(PUSH2, INPUT_PULLUP);
-    attachInterrupt(PUSH2, numCmpInterruptDifferent, FALLING);
+    pinMode(acceptButtonPin, INPUT_PULLUP);
+    attachInterrupt(acceptButtonPin, numCmpInterruptEqual, FALLING);
+    pinMode(rejectButtonPin, INPUT_PULLUP);
+    attachInterrupt(rejectButtonPin, numCmpInterruptDifferent, FALLING);
   }
 }
 
@@ -158,12 +162,14 @@ void BLE::handleNumCmp(snpAuthenticationEvt_t *evt)
 static void numCmpInterruptEqual(void)
 {
   ble.authKey = 1;
+  setPairingResult(true);
   Event_post(apEvent, AP_EVT_NUM_CMP_BTN);
 }
 
 static void numCmpInterruptDifferent(void)
 {
   ble.authKey = 0;
+  setPairingResult(false);
   Event_post(apEvent, AP_EVT_NUM_CMP_BTN);
 }
 

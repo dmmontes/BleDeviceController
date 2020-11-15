@@ -10,39 +10,33 @@ InterfaceScreen::InterfaceScreen(const String options[], uint8_t numberOfOptions
       titleYSize_{25},
       selectedOption_{0},
       numberOfOptions_{numberOfOptions},
-      xSizeOption_{screen_.screenSizeX()},
-      ySizeOption_{static_cast<uint16_t>((screen_.screenSizeY() - titleYSize_) / (numberOfOptions_ + 1))},
-      options_{new OptionPosition[numberOfOptions_]},
+      options_{new Screen::Box[numberOfOptions_]},
       selectionCallback_{selectionCallback}
 {
     LOG_DEBUG(String("InterfaceScreen::InterfaceScreen() numberOfOptions: ") + String(numberOfOptions_));
 
-    // Initialize screen
-    screen_.clear(blackColour);
-    screen_.setOrientation(0);
-    screen_.setPenSolid(true);
-    screen_.setFontSize(screen_.fontMax());
-    screen_.setFontSolid(false);
-
     // Draw Title text
-    uint16_t xTitleText{static_cast<uint16_t>((xSizeOption_ - screen_.fontSizeX() * title_.length()) / 2)};
-    uint16_t yTitleText{static_cast<uint16_t>((titleYSize_ - screen_.fontSizeY()) / 2)};
-    screen_.gText(xTitleText, yTitleText, title_, whiteColour);
+    Message title;
+    title.text = title_;
+    title.yPos = static_cast<uint16_t>(titleYSize_ / 2);
+    title.fontSize = screen_.fontMax();
+    drawMessage(title);
 
-    // Determine options position and draw them
-    const uint16_t spaceBetweenOptions_{static_cast<uint16_t>(screen_.screenSizeY() /
-                                                              ((numberOfOptions_ + 1) * (numberOfOptions_ + 1) - 1))};
+    // Determine options sizes
+    const uint16_t xSizeOption{screen_.screenSizeX()};
+    const uint16_t ySizeOption{static_cast<uint16_t>((screen_.screenSizeY() - titleYSize_) / (numberOfOptions_ + 1))};
+    const uint16_t spaceBetweenOptions{static_cast<uint16_t>(screen_.screenSizeY() /
+                                                             ((numberOfOptions_ + 1) * (numberOfOptions_ + 1) - 1))};
+
+    // Draw each option (retangle and text)
     for (uint8_t i = 0; i < numberOfOptions_; ++i)
     {
-        // Draw rectangle option
         options_[i].xPos = 0;
-        options_[i].yPos = titleYSize_ + ySizeOption_ * i + spaceBetweenOptions_ * i;
-        screen_.dRectangle(options_[i].xPos, options_[i].yPos, xSizeOption_, ySizeOption_, cyanColour);
-
-        // Draw Insided text
-        uint16_t xText{static_cast<uint16_t>((xSizeOption_ - screen_.fontSizeX() * options[i].length()) / 2)};
-        uint16_t yText{static_cast<uint16_t>(options_[i].yPos + ((ySizeOption_ - screen_.fontSizeY()) / 2))};
-        screen_.gText(xText, yText, options[i], blackColour);
+        options_[i].yPos = titleYSize_ + ySizeOption * i + spaceBetweenOptions * i;
+        options_[i].xSize = xSizeOption;
+        options_[i].ySize = ySizeOption;
+        options_[i].text = options[i];
+        drawBox(options_[i]);
     }
 
     // Select option
@@ -88,11 +82,20 @@ void InterfaceScreen::markOption(uint8_t option, bool selected)
     LOG_DEBUG(String("InterfaceScreen::markOption() option: ") + String(option) +
               String(", selected: ") + String(selected));
 
-    screen_.setPenSolid(false);
-    const uint16_t colour{selected ? blueColour : cyanColour};
+    // Draw external rectangle
+    Screen::Box optionBox;
+    optionBox.xPos = options_[option].xPos;
+    optionBox.yPos = options_[option].yPos;
+    optionBox.xSize = options_[option].xSize;
+    optionBox.ySize = options_[option].ySize;
+    optionBox.fillBox = false;
+    optionBox.colour = selected ? blueColour : cyanColour;
+    drawBox(optionBox);
 
-    //Draw 2 not solid rectangles
-    screen_.dRectangle(options_[option].xPos, options_[option].yPos, xSizeOption_, ySizeOption_, colour);
-    screen_.dRectangle(options_[option].xPos + 1, options_[option].yPos + 1,
-                       xSizeOption_ - 2, ySizeOption_ - 2, colour);
+    // Draw second external rectangle
+    optionBox.xPos += 1;
+    optionBox.yPos += 1;
+    optionBox.xSize -= 2;
+    optionBox.ySize -= 2;
+    drawBox(optionBox);
 }

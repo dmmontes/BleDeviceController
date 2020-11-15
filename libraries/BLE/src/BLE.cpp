@@ -196,6 +196,7 @@ int BLE::resetPublicMembers(void)
   mtu = 20;
   displayStringFxn = NULL;
   displayUIntFxn = NULL;
+  setPairingResultFxn = NULL;
   return BLE_SUCCESS;
 }
 

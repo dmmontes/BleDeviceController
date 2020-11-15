@@ -12,6 +12,12 @@ namespace Detector
      */
     class MouseJoystickDetector : public JoystickDetector
     {
+    public:
+        /**
+         * @brief Construct a new Mouse Joystick Detector object
+         */
+        MouseJoystickDetector();
+
     protected:
         ///< Implementation of virtual methods from JoystickDetector
         virtual void setDetectionType(IDetector::DetectionType detectionType) override;

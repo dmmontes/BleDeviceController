@@ -48,6 +48,9 @@ class BLE : public Stream
        Manually set these in setup(). */
     displayStringFxn_t displayStringFxn;
     displayUIntFxn_t displayUIntFxn;
+    setPairingResultFxn_t setPairingResultFxn;
+    int acceptButtonPin{PUSH1};
+    int rejectButtonPin{PUSH2};
 
     BLE(byte portType=BLE_PORT_UART);
 

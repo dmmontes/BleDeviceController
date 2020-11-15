@@ -2,8 +2,11 @@
 #ifndef BLUETOOTH_STATE
 #define BLUETOOTH_STATE
 
-#include "IState.h"
+#include <cstdint>
+
 #include "IBleController.h"
+#include "BluetoothConnectionStateMachine.h"
+#include "IState.h"
 
 /**
  * @brief Represents an state where device are sending data through bluetooth
@@ -19,11 +22,19 @@ public:
      */
     BluetoothState(IContext &context, Ble::IBleController &bleController);
 
+    /**
+     * @brief Destroy the Bluetooth State object
+     */
+    ~BluetoothState();
+
     ///< Implementation of virtual methods from IState
     virtual bool isDetectionEnabled() override;
 
 protected:
     Ble::IBleController &bleController_; ///< Controller of Ble connection
+
+private:
+    BluetoothConnectionStateMachine bluetoothConnectionStateMachine_; ///< State machine of bluetooth connection
 };
 
 #endif //BLUETOOTH_STATE

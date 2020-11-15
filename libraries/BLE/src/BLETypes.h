@@ -174,6 +174,7 @@ typedef struct
 
 typedef void (*displayStringFxn_t)(const char string[]);
 typedef void (*displayUIntFxn_t)(uint32_t num);
+typedef void (*setPairingResultFxn_t)(bool paired);
 
 /*******************************************************************************
  * See the SNP API guide for documentation on these typedefs.

@@ -16,6 +16,19 @@ namespace Ble
         virtual ~IBleController();
 
         /**
+         * @brief Set the Pin Callbacks Parameter to verify pairing devices
+         * 
+         * @param getPinText Function to get the text to verify pairing devices 
+         * @param getPinNumber Function to get the pin number to verify pairing devices 
+         * @param setPairingResult Function to set the pairing result
+         * @param acceptButtonPin Button to accept the connection (Equal pin)
+         * @param rejectButtonPin Button to reject the connection (Different pin)
+         */
+        void setPinCallbacksParameters(displayStringFxn_t getPinText,
+                                       displayUIntFxn_t getPinNumber, setPairingResultFxn_t setPairingResult,
+                                       int acceptButtonPin, int rejectButtonPin);
+
+        /**
          * @brief Send data/action via BLE to receiver device
          * 
          * @param data data to be sent

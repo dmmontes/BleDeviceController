@@ -1,8 +1,6 @@
 #ifndef INTERFACE_SCREEN
 #define INTERFACE_SCREEN
 
-#include <cstdint>
-
 #include "Screen.h"
 
 /**
@@ -37,15 +35,6 @@ public:
 
 private:
     /**
-     * @brief Indicates the upper left corner of the option 
-     */
-    struct OptionPosition
-    {
-        uint16_t xPos{0}; ///< Upper-Left corner of the option. Position in X axis
-        uint16_t yPos{0}; ///< Upper-Left corner of the option. Position in Y axis
-    };
-
-    /**
      * @brief Draw a rectangle over selected options and "delete" it over un selected option
      * 
      * @param option Option to be marked
@@ -58,9 +47,7 @@ private:
 
     uint8_t selectedOption_;        ///< Indicates the position of the selected options
     const uint8_t numberOfOptions_; ///< Number of options to be displayed
-    const uint16_t xSizeOption_;    ///< Horizontal size of the option
-    const uint16_t ySizeOption_;    ///< Vertical size of the option
-    OptionPosition *options_;       ///< Indicates the position of each option
+    Screen::Box *options_;          ///< Indicates the position of each option
 
     SelectionCallback selectionCallback_; ///< Callback when an option is selected
 };
