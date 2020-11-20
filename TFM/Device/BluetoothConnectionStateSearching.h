@@ -25,7 +25,15 @@ public:
     virtual bool isConnected() override;
 
 private:
-    bool connectionLost_; ///< Indicates if last state was connected
+    /**
+     * @brief Blink function (facade mode) 
+     */
+    void blink();
+
+    bool connectionLost_;         ///< Indicates if last state was connected
+    const uint8_t searchingLed_;  ///< Led to indicate that device is searching
+    unsigned long timeToBlink_;   ///< Time to start a new cycle of blink
+    unsigned long blinkDuration_; ///< Duration of the blink
 };
 
 #endif //BLUETOOTH_CONNECTION_STATE_SEARCHING

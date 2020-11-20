@@ -79,6 +79,49 @@ Interface IState
     # Context*
 }
 
+Interface IPowerStateMachine
+{
+    + virtual void detectionResult(bool detectedAction) = 0;
+}
+
+Interface IPowerState
+{
+    + virtual void detectionResult(bool detectedAction) = 0;
+}
+
+class PowerStateMachine
+{
+    
+}
+IPowerStateMachine <|-- PowerStateMachine
+IState -up-> PowerStateMachine
+PowerStateMachine -up- IPowerState
+
+class PowerState1
+{
+
+}
+IPowerState <|-up- PowerState1
+
+class PowerState2
+{
+
+}
+IPowerState <|-up- PowerState2
+
+class PowerState3
+{
+
+}
+IPowerState <|-up- PowerState3
+
+class PowerState4
+{
+
+}
+IPowerState <|-up- PowerState4
+
+
 class BluetoothState
 {
 
@@ -94,15 +137,14 @@ Interface IBluetoothConnectionStateMachine
 
 Interface IBluetoothConnectionState
 {
-    + void handleState(bool connected)
-    + bool isConnected()
+    + virtual void handleState(bool connected) = 0
+    + virtual bool isConnected() = 0
 }
 IBluetoothConnectionState -left-> BluetoothScreen
 
 class BluetoothConnectionStateMachine
 {
-    + void handleState(bool connected)
-    + bool isConnected()
+
 }
 IBluetoothConnectionStateMachine <|-down- BluetoothConnectionStateMachine
 BluetoothConnectionStateMachine -- IBluetoothConnectionState
@@ -314,7 +356,7 @@ class Context
 Context -left- IState
 Context -up- StateType
 Context -up- DetectorType
-Context --> BleControllerFactory
+Context -right-> BleControllerFactory
 Context "Create" ..> IDetectorFactory
 Context  .left.> IAction
 

@@ -9,7 +9,7 @@ namespace Detector
 {
 
     InterfaceJoystickDetector::InterfaceJoystickDetector()
-        : JoystickDetector(300) //Times between detections = 300ms
+        : JoystickDetector(200) //Times between detections = 200ms
     {
         LOG_DEBUG("InterfaceJoystickDetector::InterfaceJoystickDetector()");
     }

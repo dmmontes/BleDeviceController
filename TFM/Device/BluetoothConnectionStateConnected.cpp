@@ -47,10 +47,8 @@ void BluetoothConnectionStateConnected::handleState(bool connected)
         {
             LOG_DEBUG("BluetoothConnectionStateConnected::handleState() state changed to Searching");
             timeToTurnOff_ = 0;
-            if (screen_)
-            {
-                screen_->drawSearchingMessage();
-            }
+            delete screen_;
+            screen_ = nullptr;
             stateMachine_->changeState(IBluetoothConnectionStateMachine::ConnectionState::SEARCHING, screen_);
         }
     }

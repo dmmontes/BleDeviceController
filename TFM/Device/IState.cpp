@@ -35,10 +35,11 @@ void IState::detectAction(IAction *action)
     }
 
     // Process an action if detected
-    if (!detectedAction)
+    if (detectedAction)
     {
-        LOG_DEBUG("IState::detectAction() No action detected");
-        return;
+        processAction(action->getActionData());
     }
-    processAction(action->getActionData());
+
+    // Notifiy to the power state about the detection result
+    powerStateMachine_.detectionResult(detectedAction);
 }

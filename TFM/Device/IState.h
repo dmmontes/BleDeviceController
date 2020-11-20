@@ -5,6 +5,7 @@
 #include "IDetector.h"
 #include "IContext.h"
 #include "IAction.h"
+#include "PowerStateMachine.h"
 
 /**
  * @brief Represents a state of the device. 
@@ -56,6 +57,7 @@ protected:
     IContext &context_; ///< Pointer to device's context
 
 private:
+    PowerStateMachine powerStateMachine_;       ///< State machiche of power consumption
     Detector::DetectorPtr *detectors_{nullptr}; ///< vector of pointers to detectors
     size_t numDetectors_{0};                    ///< Number of detectors
 };
