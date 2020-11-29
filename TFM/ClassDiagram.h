@@ -330,6 +330,18 @@ class AccGamepad
 }
 AccelerometerDetector <|-down- AccGamepad
 
+class AccelGyroDetector
+{
+
+}
+IDetector <|-down- AccelGyroDetector
+
+class AccGyroGamepad
+{
+
+}
+AccelGyroDetector <|-down- AccGyroGamepad
+
 
 enum StateType
 {
@@ -342,7 +354,8 @@ enum DetectorType
 {
 	BUTTON,
     JOYSTICK,
-    ACCELEROMETER
+    ACCELEROMETER,
+    ACCELGYRO
 }
 
 class Context

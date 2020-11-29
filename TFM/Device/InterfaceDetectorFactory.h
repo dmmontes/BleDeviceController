@@ -13,8 +13,8 @@ namespace Detector
     {
     protected:
         ///< Implementation of virtual methods from IDetectorFactory
-        virtual IDetector *createButtonDetector() override;
-        virtual IDetector *createJoystickDetector() override;
+        virtual DetectorPtr createButtonDetector() override;
+        virtual DetectorPtr createJoystickDetector() override;
     };
 
 } // namespace Detector

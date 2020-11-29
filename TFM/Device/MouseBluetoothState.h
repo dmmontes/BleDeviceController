@@ -17,9 +17,6 @@ public:
      * @param bleController Reference to a Ble controller
      */
     MouseBluetoothState(IContext &context, Ble::IBleController &bleController);
-
-    ///< Implementation of virtual methods from IState
-    virtual void processAction(const IAction::ActionData &actionData) override;
 };
 
 #endif //MOUSE_BLUETOOTH_STATE

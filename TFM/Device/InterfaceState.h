@@ -31,7 +31,8 @@ private:
      */
     void selectedOption(uint8_t selectedOption);
 
-    InterfaceScreen screen_; ///< Screen of the device. Draw in the display a menu of options
+    InterfaceScreen screen_;  ///< Screen of the device. Draw in the display a menu of options
+    bool gamepadMode_{false}; ///< Indicates if gamepad mode has been selected
 };
 
 #endif //INTERFACE_STATE

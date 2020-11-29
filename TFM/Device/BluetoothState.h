@@ -28,6 +28,7 @@ public:
     ~BluetoothState();
 
     ///< Implementation of virtual methods from IState
+    virtual void processAction(const IAction::ActionData &actionData) override;
     virtual bool isDetectionEnabled() override;
 
 protected:

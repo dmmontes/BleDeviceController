@@ -29,7 +29,7 @@ public:
 
     ///< Implementation of virtual methods from IContext
     virtual void setDetectors(DetectorType *detectorTypes, size_t numDetectors) override;
-    virtual void changeState(StateType newState) override;
+    virtual void changeState(StateType newState, bool extraSensors = false) override;
 
     /**
      * @brief General process of the device, detecting actions performed by user 
@@ -47,8 +47,8 @@ private:
      */
     void setDetectionType();
 
-    Ble::BleControllerFactory &bleControllerFactory_; ///< Factory of Ble controllers
-    Ble::IBleController *bleController_{nullptr};     ///< Ble Controller being used by state
+    Ble::BleControllerFactory &bleControllerFactory_;      ///< Factory of Ble controllers
+    Ble::IBleController *bleController_{nullptr};          ///< Ble Controller being used by state
     Detector::IDetectorFactory *detectorFactory_{nullptr}; ///< Factory of detectors
     Detector::DetectorPtr *detectors_{nullptr};            ///< Vector of detectors
     size_t numDetectors_{0};                               ///< Number of detectors

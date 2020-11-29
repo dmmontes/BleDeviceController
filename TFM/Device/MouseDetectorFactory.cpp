@@ -9,19 +9,19 @@
 namespace Detector
 {
 
-    IDetector *MouseDetectorFactory::createButtonDetector()
+    DetectorPtr MouseDetectorFactory::createButtonDetector()
     {
         LOG_DEBUG("MouseDetectorFactory::createButtonDetector()");
         return new MouseButtonsDetector();
     }
 
-    IDetector *MouseDetectorFactory::createJoystickDetector()
+    DetectorPtr MouseDetectorFactory::createJoystickDetector()
     {
         LOG_DEBUG("MouseDetectorFactory::createJoystickDetector()");
         return new MouseJoystickDetector();
     }
 
-    IDetector *MouseDetectorFactory::createAccelerometerDetector()
+    DetectorPtr MouseDetectorFactory::createAccelerometerDetector()
     {
         LOG_DEBUG("MouseDetectorFactory::createAccelerometerDetector()");
         return new MouseAccelerometerDetector();

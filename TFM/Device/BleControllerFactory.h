@@ -17,7 +17,8 @@ namespace Ble
          */
         enum class BleType : uint8_t
         {
-            MOUSE ///< Mouse Ble Controller
+            MOUSE,  ///< Mouse Ble Controller
+            GAMEPAD ///< Gamepad Ble Controller
         };
 
         /**

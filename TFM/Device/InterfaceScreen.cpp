@@ -5,26 +5,44 @@
 #include "InterfaceAction.h"
 #include "WString.h"
 
-InterfaceScreen::InterfaceScreen(const String options[], uint8_t numberOfOptions, SelectionCallback selectionCallback)
-    : title_{"Choose control mode"},
-      titleYSize_{25},
-      selectedOption_{0},
-      numberOfOptions_{numberOfOptions},
-      options_{new Screen::Box[numberOfOptions_]},
-      selectionCallback_{selectionCallback}
+InterfaceScreen::~InterfaceScreen()
 {
-    LOG_DEBUG(String("InterfaceScreen::InterfaceScreen() numberOfOptions: ") + String(numberOfOptions_));
+    LOG_DEBUG("InterfaceScreen::~InterfaceScreen()");
+    delete[] options_;
+}
+
+void InterfaceScreen::drawNewScreen(const String &title, const String options[], uint8_t numberOfOptions,
+                                    SelectionCallback selectionCallback)
+{
+    LOG_DEBUG(String("InterfaceScreen::drawNewScreen() numberOfOptions: ") + String(numberOfOptions));
+
+    // Remove old screen
+    if (title_.text != "")
+    {
+        removeMessage(title_, blackColour);
+    }
+    for (uint8_t i = 0; i < numberOfOptions_; ++i)
+    {
+        removeBox(options_[i], blackColour);
+    }
+
+    // Update data
+    selectedOption_ = 0;
+    numberOfOptions_ = numberOfOptions;
+    selectionCallback_ = selectionCallback;
+    delete[] options_;
+    options_ = new Screen::Box[numberOfOptions_];
 
     // Draw Title text
-    Message title;
-    title.text = title_;
-    title.yPos = static_cast<uint16_t>(titleYSize_ / 2);
-    title.fontSize = screen_.fontMax();
-    drawMessage(title);
+    const uint8_t titleSize{25};
+    title_.text = title;
+    title_.yPos = static_cast<uint16_t>(titleSize / 2);
+    title_.fontSize = screen_.fontMax();
+    drawMessage(title_);
 
     // Determine options sizes
     const uint16_t xSizeOption{screen_.screenSizeX()};
-    const uint16_t ySizeOption{static_cast<uint16_t>((screen_.screenSizeY() - titleYSize_) / (numberOfOptions_ + 1))};
+    const uint16_t ySizeOption{static_cast<uint16_t>((screen_.screenSizeY() - titleSize) / (numberOfOptions_ + 1))};
     const uint16_t spaceBetweenOptions{static_cast<uint16_t>(screen_.screenSizeY() /
                                                              ((numberOfOptions_ + 1) * (numberOfOptions_ + 1) - 1))};
 
@@ -32,7 +50,7 @@ InterfaceScreen::InterfaceScreen(const String options[], uint8_t numberOfOptions
     for (uint8_t i = 0; i < numberOfOptions_; ++i)
     {
         options_[i].xPos = 0;
-        options_[i].yPos = titleYSize_ + ySizeOption * i + spaceBetweenOptions * i;
+        options_[i].yPos = titleSize + ySizeOption * i + spaceBetweenOptions * i;
         options_[i].xSize = xSizeOption;
         options_[i].ySize = ySizeOption;
         options_[i].text = options[i];
@@ -41,12 +59,6 @@ InterfaceScreen::InterfaceScreen(const String options[], uint8_t numberOfOptions
 
     // Select option
     markOption(selectedOption_, true);
-}
-
-InterfaceScreen::~InterfaceScreen()
-{
-    LOG_DEBUG("InterfaceScreen::~InterfaceScreen()");
-    delete[] options_;
 }
 
 void InterfaceScreen::draw(int8_t action)

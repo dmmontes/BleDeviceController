@@ -47,6 +47,17 @@ BluetoothState::~BluetoothState()
     LOG_DEBUG("BluetoothState::~BluetoothState()");
 }
 
+void BluetoothState::processAction(const IAction::ActionData &actionData)
+{
+    LOG_DEBUG("BluetoothState::processAction()");
+    bool success = bleController_.sendData(actionData.data, actionData.dataSize);
+
+    if (!success)
+    {
+        LOG_ERROR(String("BluetoothState::processAction() sending Bluetooth data, errorCode: ") + String(success));
+    }
+}
+
 bool BluetoothState::isDetectionEnabled()
 {
     LOG_DEBUG("BluetoothState::isDetectionEnabled()");

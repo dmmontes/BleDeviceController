@@ -24,7 +24,7 @@ namespace Detector
 
     private:
         const uint16_t moveUpLimit_{924};   ///< Limit to consider a move up in Y axis (read value must be higher)
-        const uint16_t moveDownLimit_{100}; ///< Limit to considere a move up in Y axis (read value must be lower)
+        const uint16_t moveDownLimit_{100}; ///< Limit to considere a move down in Y axis (read value must be lower)
     };
 
 } // namespace Detector

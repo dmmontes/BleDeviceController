@@ -2,6 +2,9 @@
 
 #include "DeviceLogger.h"
 
+#include "GamepadAction.h"
+#include "GamepadBluetoothState.h"
+#include "GamepadDetectorFactory.h"
 #include "InterfaceAction.h"
 #include "InterfaceDetectorFactory.h"
 #include "InterfaceState.h"
@@ -46,7 +49,7 @@ void DeviceContext::setDetectors(DetectorType *detectorTypes, size_t numDetector
     setDetectionType();
 }
 
-void DeviceContext::changeState(StateType newState)
+void DeviceContext::changeState(StateType newState, bool extraSensors /*= false*/)
 {
     LOG_DEBUG("DeviceContext::changeState()");
     cleanup();
@@ -65,6 +68,13 @@ void DeviceContext::changeState(StateType newState)
         action_ = new MouseAction();
         bleController_ = bleControllerFactory_.createBleController(Ble::BleControllerFactory::BleType::MOUSE, "Mouse Controller", true);
         state_ = new MouseBluetoothState(*this, *bleController_);
+        break;
+
+    case DeviceContext::StateType::GAMEPAD:
+        detectorFactory_ = new Detector::GamepadDetectorFactory();
+        action_ = new GamepadAction();
+        bleController_ = bleControllerFactory_.createBleController(Ble::BleControllerFactory::BleType::GAMEPAD, "Gamepad Controller", true);
+        state_ = new GamepadBluetoothState(*this, *bleController_, extraSensors);
         break;
 
     default:

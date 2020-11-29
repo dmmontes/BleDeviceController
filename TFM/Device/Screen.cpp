@@ -69,6 +69,15 @@ void Screen::drawBox(const Box &box)
     }
 }
 
+void Screen::removeBox(const Box &box, uint16_t colour)
+{
+    LOG_DEBUG("Screen::removeBox()");
+
+    // Fill it with a colour rectangle
+    screen_.setPenSolid(true);
+    screen_.dRectangle(box.xPos, box.yPos, box.xSize, box.ySize, colour);
+}
+
 void Screen::drawImage(const Image &image)
 {
     LOG_DEBUG("Screen::drawImage()");

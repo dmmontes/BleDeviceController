@@ -83,6 +83,14 @@ protected:
     void drawBox(const Box &box);
 
     /**
+     * @brief Remove a box with a colour rectangle
+     * 
+     * @param message box to be removed
+     * @param colour Colour of the rectangle
+     */
+    void removeBox(const Box &box, uint16_t colour);
+
+    /**
      * @brief Draw an image in the screen
      * 
      * @param image Image to be drawn

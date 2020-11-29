@@ -3,6 +3,7 @@
 #include "DeviceLogger.h"
 
 #include "BleMouseController.h"
+#include "BleGamepadController.h"
 
 namespace Ble
 {
@@ -21,6 +22,9 @@ namespace Ble
         {
         case BleControllerFactory::BleType::MOUSE:
             bleController_ = new BleMouseController(name, useSecurity);
+            break;
+        case BleControllerFactory::BleType::GAMEPAD:
+            bleController_ = new BleGamepadController(name, useSecurity);
             break;
         default:
             LOG_WARNING("BleControllerFactory::createBleController() Unknown specified type");

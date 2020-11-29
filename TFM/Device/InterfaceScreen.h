@@ -13,18 +13,20 @@ public:
     typedef void (*SelectionCallback)(uint8_t);
 
     /**
+     * @brief Destroy the Interface Screen object
+     */
+    ~InterfaceScreen();
+
+    /**
      * @brief Construct a new Interface Screen object
      * 
+     * @param title Title of the screen
      * @param options Array of string for each option
      * @param numberOfOptions Number of options
      * @param selectionCallback Callback to be called when an option is selected
      */
-    InterfaceScreen(const String options[], uint8_t numberOfOptions, SelectionCallback selectionCallback);
-
-    /**
-     * @brief Destroy the Interface Screen object
-     */
-    ~InterfaceScreen();
+    void drawNewScreen(const String &title, const String options[], uint8_t numberOfOptions,
+                       SelectionCallback selectionCallback);
 
     /**
      * @brief  Draw in the display a menu of options
@@ -42,12 +44,10 @@ private:
      */
     void markOption(uint8_t option, bool selected);
 
-    const String title_;        ///< Title of the screen
-    const uint16_t titleYSize_; ///< Vertical size of the title
-
-    uint8_t selectedOption_;        ///< Indicates the position of the selected options
-    const uint8_t numberOfOptions_; ///< Number of options to be displayed
-    Screen::Box *options_;          ///< Indicates the position of each option
+    Screen::Message title_;         ///< Title of the screen
+    uint8_t selectedOption_{0};     ///< Indicates the position of the selected options
+    uint8_t numberOfOptions_{0};    ///< Number of options to be displayed
+    Screen::Box *options_{nullptr}; ///< Indicates the position of each option
 
     SelectionCallback selectionCallback_; ///< Callback when an option is selected
 };

@@ -15,9 +15,10 @@ public:
      */
     enum class DetectorType : uint8_t
     {
-        BUTTON,       ///< Buton Detector
-        JOYSTICK,     ///< Joystick Detector
-        ACCELEROMETER ///< Accelerometer Detector
+        BUTTON,        ///< Buton Detector
+        JOYSTICK,      ///< Joystick Detector
+        ACCELEROMETER, ///< Accelerometer Detector
+        ACCEL_GYRO     ///< Accelerometer-Gyroscope Detector
     };
 
     /**
@@ -26,7 +27,8 @@ public:
     enum class StateType : uint8_t
     {
         INTERFACE, ///< Showing initial interface
-        MOUSE      ///< Ble mouse mode
+        MOUSE,     ///< Ble mouse mode
+        GAMEPAD    ///< Ble gamepad mode
     };
 
     /**
@@ -46,8 +48,9 @@ public:
      * @brief Change the state of the device to a new one
      * 
      * @param newState New state of the device
+     * @param extraSensors Indicates if add extra sensors or not
      */
-    virtual void changeState(StateType newState) = 0;
+    virtual void changeState(StateType newState, bool extraSensors = false) = 0;
 };
 
 #endif //DEVICE_CONTEXT

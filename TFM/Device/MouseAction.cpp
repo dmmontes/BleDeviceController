@@ -10,7 +10,7 @@ IAction::ActionData MouseAction::getActionData()
     memcpy(previousMouseAction_, mouseAction_, sizeof(mouseAction_));
     moveCursor(0, 0);
     scroll(0);
-    return IAction::ActionData{previousMouseAction_, sizeof(mouseAction_)};
+    return IAction::ActionData{previousMouseAction_, sizeof(previousMouseAction_)};
 }
 
 void MouseAction::rightClick(bool pressed)

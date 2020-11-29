@@ -29,9 +29,9 @@ namespace Detector
          */
         struct AccelerometerState
         {
-            uint16_t xAxis; ///< Value of x Axis (0-1024)
-            uint16_t yAxis; ///< Value of y Axis (0-1024)
-            uint16_t zAxis; ///< Value of z Axis (0-1024)
+            int16_t xAxis; ///< Value of x Axis (0-1024)
+            int16_t yAxis; ///< Value of y Axis (0-1024)
+            int16_t zAxis; ///< Value of z Axis (0-1024)
         };
 
         /**
@@ -44,9 +44,10 @@ namespace Detector
         virtual bool checkAction(const AccelerometerState &accelerometerState, IAction *action) = 0;
 
     private:
-        const uint8_t xAxisPin_ = 23; // the number of the accelerometer X-axis pin in MKII
-        const uint8_t yAxisPin_ = 24; // the number of the accelerometer Y-axis pin in MKII
-        const uint8_t zAxisPin_ = 25; // the number of the accelerometer X-axis pin in MKII
+        const uint8_t xAxisPin_;            ///< the number of the accelerometer X-axis pin in MKII
+        const uint8_t yAxisPin_;            ///< the number of the accelerometer Y-axis pin in MKII
+        const uint8_t zAxisPin_;            ///< the number of the accelerometer X-axis pin in MKII
+        const uint16_t accelerometerLimit_; ///< Limit in unit of accelerometer value
     };
 
 } // namespace Detector

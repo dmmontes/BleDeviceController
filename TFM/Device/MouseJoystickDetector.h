@@ -67,7 +67,7 @@ namespace Detector
         const float polyB_{-0.0009004226}; ///< B value in a polynomial function (ax2 + bx + c)
         const float polyC_{1.148687};      ///< C value in a polynomial function (ax2 + bx + c)
 
-        uint8_t buttonPressed_{0}; ///< State of the button (0 press, 1 released)
+        bool buttonPressed_{false}; ///< Indicates if button is pressed or not
     };
 
 } // namespace Detector

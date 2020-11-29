@@ -13,21 +13,14 @@ namespace Detector
     {
     public:
         /**
-         * @brief Type of detector factory
-         */
-        enum class DetectorFactory : uint8_t
-        {
-            MOUSE ///< Mouse Detector Factory
-        };
-
-        /**
          * @brief Type of detector 
          */
         enum class DetectorType : uint8_t
         {
-            BUTTON,       ///< Button detector
-            JOYSTICK,     ///< Joystick detecktor
-            ACCELEROMETER ///< Accelerometer detector
+            BUTTON,        ///< Button detector
+            JOYSTICK,      ///< Joystick detecktor
+            ACCELEROMETER, ///< Accelerometer detector
+            ACCEL_GYRO     ///< Accelerometer-Gyroscope Detector
         };
 
         /**
@@ -77,6 +70,13 @@ namespace Detector
          * @return DetectorPtr Pointer to Accelerometer Detector object
          */
         virtual DetectorPtr createAccelerometerDetector() { return nullptr; };
+
+        /**
+         * @brief Create a Accelerometer-Gyroscope Detector object
+         * 
+         * @return DetectorPtr Pointer to Accelerometer-Gyroscope Detector object
+         */
+        virtual DetectorPtr createAccelGyroDetector() { return nullptr; };
 
     private:
         DetectorPtr *detectors_{nullptr}; ///< Vector of pointers to IDetector

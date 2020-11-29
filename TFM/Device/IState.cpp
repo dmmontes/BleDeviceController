@@ -34,12 +34,12 @@ void IState::detectAction(IAction *action)
         detectedAction |= detectors_[i]->detectAction(action);
     }
 
+    // Notifiy to the power state about the detection result
+    powerStateMachine_.detectionResult(detectedAction);
+
     // Process an action if detected
     if (detectedAction)
     {
         processAction(action->getActionData());
     }
-
-    // Notifiy to the power state about the detection result
-    powerStateMachine_.detectionResult(detectedAction);
 }

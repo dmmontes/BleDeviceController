@@ -40,9 +40,9 @@ namespace Detector
         // Read the value of button
         if (buttonPressed_ != joystickState.buttonPressed)
         {
-            LOG_DEBUG("Button changed");
+            LOG_DEBUG("MouseJoystickDetector::checkAction() Button changed");
             buttonPressed_ = joystickState.buttonPressed;
-            static_cast<MouseAction *>(action)->middleClick(buttonPressed_ == 0);
+            static_cast<MouseAction *>(action)->middleClick(buttonPressed_);
             actionDetected = true;
         }
 

@@ -8,13 +8,13 @@
 namespace Detector
 {
 
-    IDetector *InterfaceDetectorFactory::createButtonDetector()
+    DetectorPtr InterfaceDetectorFactory::createButtonDetector()
     {
         LOG_DEBUG("InterfaceDetectorFactory::createButtonDetector()");
         return new InterfaceButtonsDetector();
     }
 
-    IDetector *InterfaceDetectorFactory::createJoystickDetector()
+    DetectorPtr InterfaceDetectorFactory::createJoystickDetector()
     {
         LOG_DEBUG("InterfaceDetectorFactory::createButtonDetector()");
         return new InterfaceJoystickDetector();

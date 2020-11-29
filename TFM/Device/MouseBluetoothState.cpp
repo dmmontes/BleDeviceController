@@ -12,14 +12,3 @@ MouseBluetoothState::MouseBluetoothState(IContext &context, Ble::IBleController 
     IContext::DetectorType detectors[numDetectors]{IContext::DetectorType::BUTTON, IContext::DetectorType::JOYSTICK, IContext::DetectorType::ACCELEROMETER};
     context_.setDetectors(detectors, numDetectors);
 }
-
-void MouseBluetoothState::processAction(const IAction::ActionData &actionData)
-{
-    LOG_DEBUG("MouseBluetoothState::processAction()");
-    bool success = bleController_.sendData(actionData.data, actionData.dataSize);
-
-    if (!success)
-    {
-        LOG_ERROR(String("MouseBluetoothState::processAction() sending Bluetooth data, errorCode: ") + String(success));
-    }
-}

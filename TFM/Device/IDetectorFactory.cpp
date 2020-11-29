@@ -40,6 +40,10 @@ namespace Detector
                 detectors_[i] = createAccelerometerDetector();
                 break;
 
+            case DetectorType::ACCEL_GYRO:
+                detectors_[i] = createAccelGyroDetector();
+                break;
+
             default:
                 LOG_WARNING("IDetectorFactory::createDetectors() Unknown specified type");
                 break;
