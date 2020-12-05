@@ -7,9 +7,13 @@
 
 PowerState2::PowerState2(IPowerStateMachine *stateMachine)
     : IPowerState(stateMachine),
-      timesDetecting_{0},
-      timesLimitToLowerState_{-20},
+      firstResult_{true},
+      timeToChangeToLowerState_{0},
+      timeLimitToLowerState_{10000},
+      timeToChangeToHigherState_{0},
+      timeLimitToHigherState_{3000},
       timesLimitToHigherState_{5},
+      timesDetecting_{0},
       delayTime_{100}
 {
     LOG_DEBUG("PowerState2::PowerState2()");
@@ -18,30 +22,40 @@ PowerState2::PowerState2(IPowerStateMachine *stateMachine)
 void PowerState2::detectionResult(bool detectedAction)
 {
     LOG_DEBUG(String("PowerState2::detectionResult()  detectedAction: ") + String(detectedAction));
+    unsigned long actualTime = millis();
 
-    // Check if timesDetecting_ has to be reset (i.e: we detect an action after 3 turns no detecting) and add the result
-    int8_t addedTime = (detectedAction ? 1 : -1);
-    if (timesDetecting_ * addedTime > 0)
+    // Set initial time in first detection
+    if (firstResult_)
     {
-        timesDetecting_ += addedTime;
+        firstResult_ = false;
+        timeToChangeToLowerState_ = actualTime + timeLimitToLowerState_;
+        timeToChangeToHigherState_ = actualTime + timeLimitToHigherState_;
     }
-    else
+
+    // If detected action, check if goes to higher level
+    if (detectedAction)
     {
-        timesDetecting_ = addedTime;
+        timeToChangeToLowerState_ = actualTime + timeLimitToLowerState_;
+        ++timesDetecting_;
+        if (timesDetecting_ == timesLimitToHigherState_)
+        {
+            stateMachine_->changeState(IPowerStateMachine::PowerState::PW1);
+            return;
+        }
     }
-    LOG_DEBUG(String("PowerState2::detectionResult()  timesDetecting_: ") + String(timesDetecting_) +
-              String(", delaying ms: ") + String(delayTime_));
+    // If no detected action, check if goes to lower level
+    else if (timeToChangeToLowerState_ < actualTime)
+    {
+        stateMachine_->changeState(IPowerStateMachine::PowerState::PW3);
+        return;
+    }
+    // Check if times detecting should be reset
+    else if (timeToChangeToHigherState_ < actualTime)
+    {
+        timeToChangeToHigherState_ = actualTime + timeLimitToHigherState_;
+        timesDetecting_ = 0;
+    }
 
     // Delay time to save power
     delay(delayTime_);
-
-    // Check if is needed to change to new state
-    if (timesDetecting_ <= timesLimitToLowerState_)
-    {
-        stateMachine_->changeState(IPowerStateMachine::PowerState::PW3);
-    }
-    else if (timesDetecting_ >= timesLimitToHigherState_)
-    {
-        stateMachine_->changeState(IPowerStateMachine::PowerState::PW1);
-    }
 }

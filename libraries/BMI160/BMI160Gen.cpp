@@ -2,7 +2,7 @@
 #include "SPI.h"
 #include "Wire.h"
 
-#define DEBUG
+// #define DEBUG
 
 bool BMI160GenClass::begin(const int spi_cs_pin, const int intr_pin)
 {

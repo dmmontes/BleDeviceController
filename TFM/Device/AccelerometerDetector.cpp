@@ -16,9 +16,9 @@ namespace Detector
     {
         LOG_DEBUG("AccelerometerDetector::checkAction()");
 
-        AccelerometerState accelerometerState{static_cast<uint16_t>(analogRead(xAxisPin_) - accelerometerLimit_),
-                                              static_cast<uint16_t>(analogRead(yAxisPin_) - accelerometerLimit_),
-                                              static_cast<uint16_t>(analogRead(zAxisPin_) - accelerometerLimit_)};
+        AccelerometerState accelerometerState{static_cast<int16_t>(analogRead(xAxisPin_) - accelerometerLimit_),
+                                              static_cast<int16_t>(analogRead(yAxisPin_) - accelerometerLimit_),
+                                              static_cast<int16_t>(analogRead(zAxisPin_) - accelerometerLimit_)};
         return checkAction(accelerometerState, action);
     }
 

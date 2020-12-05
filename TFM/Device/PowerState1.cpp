@@ -7,8 +7,9 @@
 
 PowerState1::PowerState1(IPowerStateMachine *stateMachine)
     : IPowerState(stateMachine),
-      timesDetecting_{0},
-      timesLimitToLowerState_{-10}
+      firstResult_{true},
+      timeToChangeToLowerState_{0},
+      timeLimitToLowerState_{10000}
 {
     LOG_DEBUG("PowerState1::PowerState1()");
 }
@@ -16,21 +17,21 @@ PowerState1::PowerState1(IPowerStateMachine *stateMachine)
 void PowerState1::detectionResult(bool detectedAction)
 {
     LOG_DEBUG(String("PowerState1::detectionResult()  detectedAction: ") + String(detectedAction));
+    unsigned long actualTime = millis();
 
-    // Check if timesDetecting_ has to be reset (i.e: we detect an action after 3 turns no detecting) and add the result
-    int8_t addedTime = (detectedAction ? 1 : -1);
-    if (timesDetecting_ * addedTime > 0)
+    // Set initial time in first detection
+    if (firstResult_)
     {
-        timesDetecting_ += addedTime;
+        firstResult_ = false;
+        timeToChangeToLowerState_ = actualTime + timeLimitToLowerState_;
     }
-    else
-    {
-        timesDetecting_ = addedTime;
-    }
-    LOG_DEBUG(String("PowerState1::detectionResult()  timesDetecting_: ") + String(timesDetecting_));
 
-    // Check if is needed to change to new state
-    if (timesDetecting_ <= timesLimitToLowerState_)
+    // Check if goes to next state
+    if (detectedAction)
+    {
+        timeToChangeToLowerState_ = actualTime + timeLimitToLowerState_;
+    }
+    else if (timeToChangeToLowerState_ < actualTime)
     {
         stateMachine_->changeState(IPowerStateMachine::PowerState::PW2);
     }

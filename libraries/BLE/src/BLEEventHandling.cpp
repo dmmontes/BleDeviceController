@@ -67,8 +67,8 @@ int BLE::handleEvents(void)
   if (opcode & AP_EVT_NUM_CMP_BTN)
   {
     /* User pressed a button for numeric comparison. */
-    detachInterrupt(PUSH1);
-    detachInterrupt(PUSH2);
+    detachInterrupt(acceptButtonPin);
+    detachInterrupt(rejectButtonPin);
     logRPC("Send num cmp rsp");
     logRelease();
     if (isError(SAP_setAuthenticationRsp(authKey)) ||

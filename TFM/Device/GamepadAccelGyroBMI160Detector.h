@@ -68,7 +68,7 @@ namespace Detector
         const int16_t turnDownLimit_{-100};    ///< Limit value in xGyro to consider a turn down movement
         const int16_t turnRightLimit_{100};    ///< Limit value in xGyro to consider a turn right movement
         const int16_t turnLeftLimit_{-100};    ///< Limit value in xGyro to consider a turn left movement
-        const int16_t jumpLimit_{-400};        ///< Limit value in xAccel to consider a jump action
+        const int16_t jumpLimit_{-300};        ///< Limit value in xAccel to consider a jump action
         const int16_t xCrouchedLimit_{100};    ///< Limit value in xAccel to consider a crouched action
         const int16_t zCrouchedLimit_{-100};   ///< Limit value in zAccel to consider a crouched action
         const int16_t standLimit_{-300};       ///< Limit value in zAccel to consider a stand-up action

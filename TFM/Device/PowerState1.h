@@ -23,10 +23,9 @@ public:
     virtual void detectionResult(bool detectedAction) override;
 
 private:
-    ///< Indicates the consecutive times detecting (or not) actions (positive if detects, negative if no detects action)
-    int8_t timesDetecting_;
-
-    const int8_t timesLimitToLowerState_; ///< Limit of times to change to a lower power consumption state
+    bool firstResult_;                       ///< Indicates if it is first time detecting in this state
+    unsigned long timeToChangeToLowerState_; ///< Time to change to a lower power consumption state
+    const uint16_t timeLimitToLowerState_;   ///< Limit times to change to a lower power consumption state
 };
 
 #endif //POWER_STATE_1

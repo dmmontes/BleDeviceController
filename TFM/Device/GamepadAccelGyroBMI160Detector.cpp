@@ -57,11 +57,13 @@ namespace Detector
             {
                 static_cast<GamepadAction *>(action)->releaseKey(GamepadAction::Key::SPACE);
                 jumpButtonPressed_ = false;
+                actionDetected = true;
             }
             else if (crouchKeyPressed_)
             {
                 static_cast<GamepadAction *>(action)->releaseKey(GamepadAction::Key::C);
                 crouchKeyPressed_ = false;
+                actionDetected = true;
             }
         }
 
@@ -183,9 +185,9 @@ namespace Detector
             timeToDetectCrouchStand_ = millis() + timeBetweenCrouchStand_;
             return actionDetected;
         }
-
         // Check if crouch or stand-up movement are happening
-        if (crouched_ ? (zValue < standLimit_) : (xValue < xCrouchedLimit_ && zValue > zCrouchedLimit_))
+        else if (timesContToCrouchStand_ > timesToCrouchStand_ && crouched_ ? (zValue < standLimit_)
+                                                                            : (xValue < xCrouchedLimit_ && zValue > zCrouchedLimit_))
         {
             timesContToCrouchStand_ = 0;
         }

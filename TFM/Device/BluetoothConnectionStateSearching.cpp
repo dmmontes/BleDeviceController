@@ -12,7 +12,7 @@ BluetoothConnectionStateSearching::BluetoothConnectionStateSearching(
       connectionLost_{true},
       searchingLed_{37},
       timeToBlink_{0},
-      blinkDuration_{2000}
+      blinkDuration_{5000}
 {
     LOG_DEBUG("BluetoothConnectionStateSearching::BluetoothConnectionStateSearching()");
     pinMode(searchingLed_, OUTPUT);
@@ -59,15 +59,7 @@ void BluetoothConnectionStateSearching::blink()
     }
 
     // Calculate the blink value from its position in its range duration
-    unsigned long blinkPosition{timeToBlink_ - actualTime - blinkDuration_ / 2};
-    uint16_t brightness{0};
-    if (blinkPosition < 1)
-    {
-        brightness = map(blinkPosition, 0, blinkDuration_ / 2, 0, 255);
-    }
-    else
-    {
-        brightness = map(blinkPosition, 0, -blinkDuration_ / 2, 255, 0);
-    }
+    long blinkPosition{static_cast<long>(timeToBlink_ - actualTime - blinkDuration_ / 2)};
+    uint8_t brightness{static_cast<uint8_t>(map(abs(blinkPosition), 0, blinkDuration_ / 2, 0, 25))};
     analogWrite(searchingLed_, brightness);
 }

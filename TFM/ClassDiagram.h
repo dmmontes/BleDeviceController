@@ -20,7 +20,6 @@ class BleGamepadController
 }
 IBleController <|-down- BleGamepadController
 
-
 package Energia_Ble_Library  <<Folder>> {
 
     class Ble
@@ -49,7 +48,6 @@ package Energia_Ble_Library  <<Folder>> {
     Ble_Characteristic "1" *-- "*" Ble_Descriptor
 
 }
-
 
 enum BleType
 {
@@ -95,7 +93,7 @@ class PowerStateMachine
 }
 IPowerStateMachine <|-- PowerStateMachine
 IState -up-> PowerStateMachine
-PowerStateMachine -up- IPowerState
+PowerStateMachine -- IPowerState
 
 class PowerState1
 {
@@ -126,7 +124,7 @@ class BluetoothState
 {
 
 }
-IState <|-right- BluetoothState
+IState <|-down- BluetoothState
 IState <|-down- InterfaceState
 BluetoothState -right-> IBleController
 
@@ -140,7 +138,7 @@ Interface IBluetoothConnectionState
     + virtual void handleState(bool connected) = 0
     + virtual bool isConnected() = 0
 }
-IBluetoothConnectionState -left-> BluetoothScreen
+IBluetoothConnectionState --> BluetoothScreen
 
 class BluetoothConnectionStateMachine
 {
@@ -229,15 +227,15 @@ class Screen
     + void drawBox(const Box &box)
     + void drawImage(const Image &image)
 }
-Screen -down- Image
-Screen -down- Box
-Screen -down- Message
+Screen -- Image
+Screen -- Box
+Screen -- Message
 
 class InterfaceScreen
 {
     void draw(int8_t action);
 }
-Screen <|-up- InterfaceScreen
+Screen <|-- InterfaceScreen
 
 class BluetoothScreen
 {
@@ -246,7 +244,7 @@ class BluetoothScreen
     + void removePinVerification()
     + void drawConnectionCorrect()
 }
-Screen <|-up- BluetoothScreen
+Screen <|-- BluetoothScreen
 
 
 enum DetectionType
@@ -342,6 +340,29 @@ class AccGyroGamepad
 }
 AccelGyroDetector <|-down- AccGyroGamepad
 
+package Energia_BMI160_Library  <<Folder>> {
+
+    class BMI160GenClass
+    {
+        + void begin(int mode, int pin)
+    }
+
+    class CurieIMUClass
+    {
+        + void getGyro(int& xAxis, int& yAxis, int& zAxis)
+        + void getAccel(int& xAxis, int& yAxis, int& zAxis)
+    }
+    CurieIMUClass <|-- BMI160GenClass
+    
+    class BMI160Class
+    {
+        + void getGyro(int& xAxis, int& yAxis, int& zAxis)
+        + void getAccel(int& xAxis, int& yAxis, int& zAxis)
+    }
+    BMI160Class <|-- CurieIMUClass
+}
+AccelGyroDetector -- BMI160GenClass : use 
+
 
 enum StateType
 {
@@ -408,10 +429,31 @@ class MouseAction
 }
 IAction <|-down- MouseAction
 
+enum Key
+{
+  W
+  S
+  A
+  D
+  C
+  SPACE
+  UP
+  DOWN
+  LEFT
+  RIGHT
+  NUMBER1
+  NUMBER2
+  NUMBER3
+}
+
 class GamepadAction
 {
+    + void pressKey(Key k)
+    + void releaseKey(Key k)
 }
 IAction <|-down- GamepadAction
+GamepadAction -- Key
+
 
 interface IDetectorFactory
 {

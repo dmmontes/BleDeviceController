@@ -24,7 +24,7 @@ public:
         SPACE = 0x2C,   ///< Represents key "SPACE"
         UP = 0x52,      ///< Represents key "UP"
         DOWN = 0x51,    ///< Represents key "DOWN"
-        RIGHT = 0x49,   ///< Represents key "RIGHT"
+        RIGHT = 0x4F,   ///< Represents key "RIGHT"
         LEFT = 0x50,    ///< Represents key "LEFT"
         NUMBER1 = 0x1e, ///< Represents key "1"
         NUMBER2 = 0x1f, ///< Represents key "2"
@@ -57,8 +57,8 @@ private:
      */
     String translateKey(Key key);
 
-    int8_t previousGamepadAction_[6]; ///< Data representation of the previous Gamepad action
-    int8_t gamepadAction_[6];         ///< Data representation of a Gamepad action
+    int8_t previousGamepadAction_[8]; ///< Data representation of the previous Gamepad action
+    int8_t gamepadAction_[8];         ///< Data representation of a Gamepad action
 };
 
 #endif //GAMEPAD_ACTION
