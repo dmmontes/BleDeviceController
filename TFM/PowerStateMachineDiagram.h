@@ -1,11 +1,11 @@
 @startuml
 
 [*] -> PowerState1 : Initial State
-PowerState1 --> PowerState2 : TimesWithoutDetecting > 10
-PowerState2 --> PowerState1 : TimesDetecting > 5
-PowerState2 --> PowerState3 : TimesWithoutDetecting > 20
-PowerState3 --> PowerState2 : TimesDetecting > 3
-PowerState3 --> PowerState4 : TimesWithoutDetecting > 10
-PowerState4 --> PowerState3 : ButtonPressed
+PowerState1 -right-> PowerState2 : No action detected in 10s
+PowerState2 -left-> PowerState1 : Detected 3 actions in 5s
+PowerState2 -right-> PowerState3 : No action detected in 10s
+PowerState3 -left-> PowerState2 : Detected 2 actions in 3s
+PowerState3 -right-> PowerState4 : No action detected in 10s
+PowerState4 -right-> PowerState3 : ButtonPressed
 
 @enduml

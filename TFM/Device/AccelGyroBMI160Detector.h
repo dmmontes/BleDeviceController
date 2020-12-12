@@ -48,6 +48,7 @@ namespace Detector
         virtual bool checkAction(const AccelGyroState &accelGyroState, IAction *action) = 0;
 
     private:
+        bool connected_{false};                ///< Indicates if sensor is connected or not
         const uint16_t maxSensorValue_{32768}; ///< Maximum value read by sensor
         const uint16_t maxMappedValue_{512};   ///< Maximos value mapped to detect movements
     };

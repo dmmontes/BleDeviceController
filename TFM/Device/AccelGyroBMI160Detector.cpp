@@ -13,7 +13,7 @@ namespace Detector
         LOG_DEBUG("AccelGyroBMI160Detector::AccelGyroBMI160Detector()");
 
         // Iniciate BMI160 for I2C mode
-        BMI160.begin(BMI160GenClass::I2C_MODE, 0x69);
+        connected_ = BMI160.begin(BMI160GenClass::I2C_MODE, 0x69);
         uint8_t dev_id = BMI160.getDeviceID();
         LOG_DEBUG(String("DEVICE ID: ") + String(dev_id, HEX));
 
@@ -25,6 +25,13 @@ namespace Detector
     bool AccelGyroBMI160Detector::checkAction(IAction *action)
     {
         LOG_DEBUG("AccelGyroBMI160Detector::checkAction()");
+
+        // Check if device is connected
+        if (!connected_)
+        {
+            LOG_WARNING("AccelGyroBMI160Detector::checkAction() sensor not connected");
+            return false;
+        }
 
         // Reads Gyro and Accelerometer values
         AccelGyroState accelGyroState;

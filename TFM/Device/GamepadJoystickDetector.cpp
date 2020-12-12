@@ -2,8 +2,6 @@
 
 #include "DeviceLogger.h"
 
-#include "GamepadDetectorUtil.h"
-
 namespace Detector
 {
 
@@ -19,17 +17,13 @@ namespace Detector
 
         bool actionDetected{false};
 
-        // Check the state of everoy button (UP, DOWN, LEFT, RIGH, JOYSTICK)
-        actionDetected |= GamepadDetectorUtil::checkButton(upButtonPressed_, joystickState.yAxis > moveUpRightLimit_,
-                                                           GamepadAction::Key::W, action);
-        actionDetected |= GamepadDetectorUtil::checkButton(downButtonPressed_, joystickState.yAxis < moveDownLeftLimit_,
-                                                           GamepadAction::Key::S, action);
-        actionDetected |= GamepadDetectorUtil::checkButton(rightButtonPressed_, joystickState.xAxis > moveUpRightLimit_,
-                                                           GamepadAction::Key::D, action);
-        actionDetected |= GamepadDetectorUtil::checkButton(leftButtonPressed_, joystickState.xAxis < moveDownLeftLimit_,
-                                                           GamepadAction::Key::A, action);
-        actionDetected |= GamepadDetectorUtil::checkButton(joystickbuttonPressed_, joystickState.buttonPressed,
-                                                           GamepadAction::Key::NUMBER3, action);
+        // Check the state of every button (UP, DOWN, LEFT, RIGH, JOYSTICK)
+        actionDetected |= checkKey(joystickState.yAxis > moveUpRightLimit_, GamepadAction::Key::W, action);
+        actionDetected |= checkKey(joystickState.yAxis < moveDownLeftLimit_, GamepadAction::Key::S, action);
+        actionDetected |= checkKey(joystickState.xAxis > moveUpRightLimit_, GamepadAction::Key::D, action);
+        actionDetected |= checkKey(joystickState.xAxis < moveDownLeftLimit_, GamepadAction::Key::A, action);
+        actionDetected |= checkKey(joystickState.buttonPressed, GamepadAction::Key::NUMBER3, action);
+
         return actionDetected;
     }
 

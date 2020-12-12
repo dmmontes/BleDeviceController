@@ -13,41 +13,9 @@ namespace Detector
 
         bool actionDetected{false};
 
-        // Read the value of button 1
-        if (button1Pressed_ != buttonState.button1Pressed)
-        {
-            LOG_DEBUG("GamepadButtonsDetector::checkAction() Button 1 changed");
-            button1Pressed_ = buttonState.button1Pressed;
-            actionDetected = true;
+        actionDetected |= checkKey(buttonState.button1Pressed, GamepadAction::Key::NUMBER1, action);
+        actionDetected |= checkKey(buttonState.button2Pressed, GamepadAction::Key::NUMBER2, action);
 
-            // Update gamepad action
-            if (button1Pressed_)
-            {
-                static_cast<GamepadAction *>(action)->pressKey(GamepadAction::Key::NUMBER1);
-            }
-            else
-            {
-                static_cast<GamepadAction *>(action)->releaseKey(GamepadAction::Key::NUMBER1);
-            }
-        }
-
-        // Read the value of button 2
-        if (button2Pressed_ != buttonState.button2Pressed)
-        {
-            LOG_DEBUG("GamepadButtonsDetector::checkAction() Button 2 changed");
-            button2Pressed_ = buttonState.button2Pressed;
-            actionDetected = true;
-
-            // Update gamepad action
-            if (button2Pressed_)
-            {
-                static_cast<GamepadAction *>(action)->pressKey(GamepadAction::Key::NUMBER2);
-            }
-            else
-            {
-                static_cast<GamepadAction *>(action)->releaseKey(GamepadAction::Key::NUMBER2);
-            }
-        }
         return actionDetected;
     }
 

@@ -17,6 +17,7 @@ namespace Detector
         virtual DetectorPtr createJoystickDetector() override;
         virtual DetectorPtr createAccelerometerDetector() override;
         virtual DetectorPtr createAccelGyroDetector() override;
+        virtual DetectorPtr createFSRDetector() override;
     };
 
 } // namespace Detector

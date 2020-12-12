@@ -20,7 +20,8 @@ namespace Detector
             BUTTON,        ///< Button detector
             JOYSTICK,      ///< Joystick detecktor
             ACCELEROMETER, ///< Accelerometer detector
-            ACCEL_GYRO     ///< Accelerometer-Gyroscope Detector
+            ACCEL_GYRO,    ///< Accelerometer-Gyroscope detector
+            FSR            ///< Force Sensitive Resistive detector
         };
 
         /**
@@ -77,6 +78,13 @@ namespace Detector
          * @return DetectorPtr Pointer to Accelerometer-Gyroscope Detector object
          */
         virtual DetectorPtr createAccelGyroDetector() { return nullptr; };
+
+        /**
+         * @brief Create a Force Sensitive Resistor Detector object
+         * 
+         * @return DetectorPtr Pointer to Force Sensitive Resistor Detector object
+         */
+        virtual DetectorPtr createFSRDetector() { return nullptr; };
 
     private:
         DetectorPtr *detectors_{nullptr}; ///< Vector of pointers to IDetector

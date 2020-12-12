@@ -38,15 +38,27 @@ public:
      * @brief Add press key information to the action
      * 
      * @param key Key pressed
+     * @param detectorId Id of the detector
+     * @return true if action is success, false otherwise
      */
-    void pressKey(Key key);
+    bool pressKey(Key key, uint8_t detectorId);
 
     /**
      * @brief Add left click information to the action
      * 
      * @param pressed Key released
+     * @param detectorId Id of the detector
+     * @return true if action is success, false otherwise
      */
-    void releaseKey(Key key);
+    bool releaseKey(Key key, uint8_t detectorId);
+
+    /**
+     * @brief Indicates if a key is pressed or not
+     * 
+     * @param key Key pressed
+     * @param return if key is pressed
+     */
+    bool isKeypressed(Key key);
 
 private:
     /**
@@ -57,8 +69,9 @@ private:
      */
     String translateKey(Key key);
 
-    int8_t previousGamepadAction_[8]; ///< Data representation of the previous Gamepad action
-    int8_t gamepadAction_[8];         ///< Data representation of a Gamepad action
+    int8_t previousGamepadAction_[8]{0, 0, 0, 0, 0, 0, 0, 0}; ///< Data representation of the previous Gamepad action
+    int8_t gamepadAction_[8]{0, 0, 0, 0, 0, 0, 0, 0};         ///< Data representation of a Gamepad action
+    uint8_t keyOwners_[8]{0, 0, 0, 0, 0, 0, 0, 0};            ///< Owners (detector Id) of the key pressed
 };
 
 #endif //GAMEPAD_ACTION

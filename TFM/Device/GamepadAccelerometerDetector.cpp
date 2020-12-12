@@ -2,8 +2,6 @@
 
 #include "DeviceLogger.h"
 
-#include "GamepadDetectorUtil.h"
-
 namespace Detector
 {
 
@@ -22,11 +20,9 @@ namespace Detector
         bool actionDetected{false};
 
         // Check the state of everoy button (LEFT, RIGH)
-        actionDetected |= GamepadDetectorUtil::checkButton(leftButtonPressed_,
-                                                           accelerometerState.xAxis < leftTurnLimit_, GamepadAction::Key::A, action);
-        actionDetected |= GamepadDetectorUtil::checkButton(rightButtonPressed_,
-                                                           accelerometerState.xAxis > rightTurnLimit_,
-                                                           GamepadAction::Key::D, action);
+        actionDetected |= checkKey(accelerometerState.xAxis < leftTurnLimit_, GamepadAction::Key::A, action);
+        actionDetected |= checkKey(accelerometerState.xAxis > rightTurnLimit_, GamepadAction::Key::D, action);
+
         return actionDetected;
     }
 

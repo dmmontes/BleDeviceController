@@ -2,7 +2,6 @@
 
 #include "DeviceLogger.h"
 
-#include "GamepadDetectorUtil.h"
 #include "Energia.h"
 
 namespace Detector
@@ -25,46 +24,32 @@ namespace Detector
 
         // Check vertical turns of the camera
         updateTurnState(verticalState_, verTimesDetecting_, accelGyroState.yGyro, turnDownLimit_, turnUpLimit_);
-        actionDetected |= GamepadDetectorUtil::checkButton(turnUpCamera_,
-                                                           verticalState_ == TurningState::POSITIVE_TURNING,
-                                                           GamepadAction::Key::UP, action);
-        actionDetected |= GamepadDetectorUtil::checkButton(turnDownCamera_,
-                                                           verticalState_ == TurningState::NEGATIVE_TURNING,
-                                                           GamepadAction::Key::DOWN, action);
+        actionDetected |= checkKey(verticalState_ == TurningState::POSITIVE_TURNING, GamepadAction::Key::UP,
+                                   action);
+        actionDetected |= checkKey(verticalState_ == TurningState::NEGATIVE_TURNING, GamepadAction::Key::DOWN,
+                                   action);
 
         // Check horizontal turns of the camera
         updateTurnState(horizontalState_, horTimesDetecting_, accelGyroState.zGyro, turnLeftLimit_, turnRightLimit_);
-        actionDetected |= GamepadDetectorUtil::checkButton(turnRightCamera_,
-                                                           horizontalState_ == TurningState::POSITIVE_TURNING,
-                                                           GamepadAction::Key::RIGHT, action);
-        actionDetected |= GamepadDetectorUtil::checkButton(turnLeftCamera_,
-                                                           horizontalState_ == TurningState::NEGATIVE_TURNING,
-                                                           GamepadAction::Key::LEFT, action);
+        actionDetected |= checkKey(horizontalState_ == TurningState::POSITIVE_TURNING, GamepadAction::Key::RIGHT,
+                                   action);
+        actionDetected |= checkKey(horizontalState_ == TurningState::NEGATIVE_TURNING, GamepadAction::Key::LEFT,
+                                   action);
 
         // Check that if is time to detect jump / crouch / stan-up action again
         if (timeToDetectCrouchStand_ < millis())
         {
             actionDetected |= checkJump(accelGyroState.zAccel, action);
-            if (!jumpButtonPressed_)
+            if (!actionDetected)
             {
                 actionDetected |= checkCrouchStand(accelGyroState.xAccel, accelGyroState.zAccel, action);
             }
         }
         else
         {
-            // Release key if any pressed
-            if (jumpButtonPressed_)
-            {
-                static_cast<GamepadAction *>(action)->releaseKey(GamepadAction::Key::SPACE);
-                jumpButtonPressed_ = false;
-                actionDetected = true;
-            }
-            else if (crouchKeyPressed_)
-            {
-                static_cast<GamepadAction *>(action)->releaseKey(GamepadAction::Key::C);
-                crouchKeyPressed_ = false;
-                actionDetected = true;
-            }
+            /// Release key if any pressed
+            actionDetected |= checkKey(false, GamepadAction::Key::SPACE, action);
+            actionDetected |= checkKey(false, GamepadAction::Key::C, action);
         }
 
         return actionDetected;
@@ -157,12 +142,10 @@ namespace Detector
         LOG_DEBUG(String("GamepadAccelGyroBMI160Detector::checkJump() value: ") + String(value));
 
         // Check Jump button if not crouched
-        bool actionDetected{!crouched_ && (value < jumpLimit_)};
+        bool actionDetected{checkKey(!crouched_ && (value < jumpLimit_), GamepadAction::Key::SPACE, action)};
         if (actionDetected)
         {
             // If jumped disable crouch / stand-up actions
-            jumpButtonPressed_ = true;
-            static_cast<GamepadAction *>(action)->pressKey(GamepadAction::Key::SPACE);
             timeToDetectCrouchStand_ = millis() + timeAfterJumpCrouchStand_;
             timesContToCrouchStand_ = timesToCrouchStand_;
         }
@@ -179,11 +162,8 @@ namespace Detector
         if (++timesContToCrouchStand_ == timesToCrouchStand_)
         {
             crouched_ = !crouched_;
-            crouchKeyPressed_ = true;
-            actionDetected = true;
-            static_cast<GamepadAction *>(action)->pressKey(GamepadAction::Key::C);
+            actionDetected |= checkKey(true, GamepadAction::Key::C, action);
             timeToDetectCrouchStand_ = millis() + timeBetweenCrouchStand_;
-            return actionDetected;
         }
         // Check if crouch or stand-up movement are happening
         else if (timesContToCrouchStand_ > timesToCrouchStand_ && crouched_ ? (zValue < standLimit_)

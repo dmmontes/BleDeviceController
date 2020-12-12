@@ -11,8 +11,8 @@ GamepadBluetoothState::GamepadBluetoothState(IContext &context, Ble::IBleControl
     // Add gamepad bluetooth detectors
     if (extraSensors)
     {
-        const size_t numDetectors{4};
-        IContext::DetectorType detectors[numDetectors]{IContext::DetectorType::BUTTON, IContext::DetectorType::JOYSTICK, IContext::DetectorType::ACCELEROMETER, IContext::DetectorType::ACCEL_GYRO};
+        const size_t numDetectors{5};
+        IContext::DetectorType detectors[numDetectors]{IContext::DetectorType::BUTTON, IContext::DetectorType::JOYSTICK, IContext::DetectorType::ACCELEROMETER, IContext::DetectorType::ACCEL_GYRO, IContext::DetectorType::FSR};
         context_.setDetectors(detectors, numDetectors);
     }
     else

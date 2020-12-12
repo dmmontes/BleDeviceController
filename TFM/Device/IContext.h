@@ -18,7 +18,8 @@ public:
         BUTTON,        ///< Buton Detector
         JOYSTICK,      ///< Joystick Detector
         ACCELEROMETER, ///< Accelerometer Detector
-        ACCEL_GYRO     ///< Accelerometer-Gyroscope Detector
+        ACCEL_GYRO,    ///< Accelerometer-Gyroscope Detector
+        FSR            ///< Force Sensitive Resistor Detector
     };
 
     /**

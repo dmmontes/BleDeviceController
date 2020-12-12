@@ -3,6 +3,7 @@
 #define GAMEPAD_ACCELEROMETER_DETECTOR
 
 #include "AccelerometerDetector.h"
+#include "GamepadDetector.h"
 
 namespace Detector
 {
@@ -10,7 +11,7 @@ namespace Detector
     /**
      * @brief Represents a accelerometer detector for a gamepad action
      */
-    class GamepadAccelerometerDetector : public AccelerometerDetector
+    class GamepadAccelerometerDetector : public AccelerometerDetector, public GamepadDetector
     {
     public:
         /**
@@ -23,11 +24,8 @@ namespace Detector
         virtual bool checkAction(const AccelerometerState &accelerometerState, IAction *action) override;
 
     private:
-        const int8_t rightTurnLimit_{100}; ///< Limit value in xAxis to consider a scroll down movement
-        const int8_t leftTurnLimit_{-100}; ///< Limit value in zAxis to consider a scroll up movement
-
-        bool rightButtonPressed_{false}; ///< Indicates if right button is pressed or not
-        bool leftButtonPressed_{false};  ///< Indicates if left button is pressed or not
+        const int8_t rightTurnLimit_{80}; ///< Limit value in xAxis to consider a scroll down movement
+        const int8_t leftTurnLimit_{-80}; ///< Limit value in zAxis to consider a scroll up movement
     };
 
 } // namespace Detector

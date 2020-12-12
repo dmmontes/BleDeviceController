@@ -262,6 +262,12 @@ interface IDetector
 IState "1" *-left- "*" IDetector
 IDetector -left- DetectionType
 
+class GamepadDetector
+{
+    # bool checkKey(bool pressed, Key k)
+    - uint8_t detectorId
+}
+
 class ButtonDetector
 {
 
@@ -285,6 +291,7 @@ class ButtonGamepad
 
 }
 ButtonDetector <|-down- ButtonGamepad
+GamepadDetector <|-up- ButtonGamepad
 
 class JoystickDetector
 {
@@ -309,6 +316,7 @@ class JoyGamepad
 
 }
 JoystickDetector <|-down- JoyGamepad
+GamepadDetector <|-up- JoyGamepad
 
 class AccelerometerDetector
 {
@@ -327,6 +335,20 @@ class AccGamepad
 
 }
 AccelerometerDetector <|-down- AccGamepad
+GamepadDetector <|-up- AccGamepad
+
+class FSRDetector
+{
+
+}
+IDetector <|-down- FSRDetector
+
+class FSRGamepad
+{
+
+}
+FSRDetector <|-down- FSRGamepad
+GamepadDetector <|-up- FSRGamepad
 
 class AccelGyroDetector
 {
@@ -339,6 +361,7 @@ class AccGyroGamepad
 
 }
 AccelGyroDetector <|-down- AccGyroGamepad
+GamepadDetector <|-up- AccGyroGamepad
 
 package Energia_BMI160_Library  <<Folder>> {
 

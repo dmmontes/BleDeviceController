@@ -3,6 +3,7 @@
 #define GAMEPAD_ACCEL_GYRO_BMI160_DETECTOR
 
 #include "AccelGyroBMI160Detector.h"
+#include "GamepadDetector.h"
 
 namespace Detector
 {
@@ -10,7 +11,7 @@ namespace Detector
     /**
      * @brief Represents a accelerometer detector for a gamepad action
      */
-    class GamepadAccelGyroBMI160Detector : public AccelGyroBMI160Detector
+    class GamepadAccelGyroBMI160Detector : public AccelGyroBMI160Detector, public GamepadDetector
     {
     public:
         /**
@@ -82,14 +83,7 @@ namespace Detector
         int8_t horTimesDetecting_{0}; ///< Consecutive times detecting a movement needed to change horizontal state
         int8_t verTimesDetecting_{0}; ///< Consecutive times detecting a movement needed to change vertical state
 
-        bool turnUpCamera_{false};      ///< Indicates if camera should be turn up
-        bool turnDownCamera_{false};    ///< Indicates if camera should be turn down
-        bool turnRightCamera_{false};   ///< Indicates if camera should be turn right
-        bool turnLeftCamera_{false};    ///< Indicates if camera should be turn left
-        bool jumpButtonPressed_{false}; ///< Indicates if jump button is pressed
-
         bool crouched_{false};                         ///< Indicates if character is crouched or not
-        bool crouchKeyPressed_{false};                 ///< Indicates if crouch key has been pressed
         const uint32_t timesToCrouchStand_{10};        ///< Wait after detect a crouch (false positives when jumping)
         uint32_t timesContToCrouchStand_{10};          ///< Times cont to crouch(false positives when jumping)
         unsigned long timeToDetectCrouchStand_{0};     ///< Consecutive times detecting a crouch/stand movement

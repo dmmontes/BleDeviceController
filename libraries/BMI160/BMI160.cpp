@@ -35,6 +35,7 @@ THE SOFTWARE.
 
 #define BMI160_ACCEL_POWERUP_DELAY_MS 10
 #define BMI160_GYRO_POWERUP_DELAY_MS 100
+#define BMI160_MAX_TRYING_TIMES 50
 
 /* Test the sign bit and set remaining MSBs if sign bit is set */
 #define BMI160_SIGN_EXTEND(val, from) \
@@ -98,19 +99,25 @@ void BMI160Class::initialize()
     /* Power up the accelerometer */
     reg_write(BMI160_RA_CMD, BMI160_CMD_ACC_MODE_NORMAL);
     delay(1);
+
     /* Wait for power-up to complete */
+    uint8_t tryTimes = 0;
     while (0x1 != reg_read_bits(BMI160_RA_PMU_STATUS,
                                 BMI160_ACC_PMU_STATUS_BIT,
-                                BMI160_ACC_PMU_STATUS_LEN))
+                                BMI160_ACC_PMU_STATUS_LEN) &&
+                                tryTimes++ < BMI160_MAX_TRYING_TIMES)
         delay(1);
 
     /* Power up the gyroscope */
     reg_write(BMI160_RA_CMD, BMI160_CMD_GYR_MODE_NORMAL);
     delay(1);
+
     /* Wait for power-up to complete */
+    tryTimes = 0;
     while (0x1 != reg_read_bits(BMI160_RA_PMU_STATUS,
                                 BMI160_GYR_PMU_STATUS_BIT,
-                                BMI160_GYR_PMU_STATUS_LEN))
+                                BMI160_GYR_PMU_STATUS_LEN) &&
+                                tryTimes++ < BMI160_MAX_TRYING_TIMES)
         delay(1);
 
     setFullScaleGyroRange(BMI160_GYRO_RANGE_250);

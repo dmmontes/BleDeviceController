@@ -44,6 +44,10 @@ namespace Detector
                 detectors_[i] = createAccelGyroDetector();
                 break;
 
+            case DetectorType::FSR:
+                detectors_[i] = createFSRDetector();
+                break;
+
             default:
                 LOG_WARNING("IDetectorFactory::createDetectors() Unknown specified type");
                 break;
