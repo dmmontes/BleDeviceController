@@ -21,9 +21,22 @@ Screen::~Screen()
     LOG_DEBUG("Screen::~Screen()");
 
     screen_.clear(blackColour);
+    turnOff();
+};
+
+void Screen::turnOn()
+{
+    LOG_DEBUG("Screen::turnOn()");
+    screen_.setDisplay(true);
+    screen_.setBacklight(true);
+}
+
+void Screen::turnOff()
+{
+    LOG_DEBUG("Screen::turnOff()");
     screen_.setDisplay(false);
     screen_.setBacklight(false);
-};
+}
 
 void Screen::drawMessage(const Message &message)
 {

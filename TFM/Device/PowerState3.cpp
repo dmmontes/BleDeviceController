@@ -39,7 +39,7 @@ void PowerState3::detectionResult(bool detectedAction)
         ++timesDetecting_;
         if (timesDetecting_ == timesLimitToHigherState_)
         {
-            stateMachine_->changeState(IPowerStateMachine::PowerState::PW2);
+            stateMachine_->changeState(IPowerStateMachine::PowerState::PW1);
             return;
         }
     }

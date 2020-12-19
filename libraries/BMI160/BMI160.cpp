@@ -129,6 +129,28 @@ void BMI160Class::initialize()
     reg_write(BMI160_RA_INT_MAP_2, 0x00);
 }
 
+/**
+ * @brief Set the gyroscope power state
+ * 
+ * @param suspend Suspende the gyroscope
+ */
+void BMI160Class::setGyroPowerMode(bool suspend)
+{
+    reg_write(BMI160_RA_CMD, suspend ? BMI160_CMD_GYR_MODE_SUSPEND : BMI160_CMD_GYR_MODE_NORMAL);
+    delay(1);
+}
+
+/**
+ * @brief Set the accelerometer power state
+ * 
+ * @param suspend Suspende the accelerometer
+ */
+void BMI160Class::setAccelPowerMode(bool suspend)
+{
+    reg_write(BMI160_RA_CMD, suspend ? BMI160_CMD_ACC_MODE_SUSPEND : BMI160_CMD_ACC_MODE_NORMAL);
+    delay(1);
+}
+
 /** Get Device ID.
  * This register is used to verify the identity of the device (0b11010001, 0xD1).
  * @return Device ID (should be 0xD1)

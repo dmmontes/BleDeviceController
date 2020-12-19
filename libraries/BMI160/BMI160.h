@@ -254,13 +254,16 @@ THE SOFTWARE.
 #define BMI160_ACCEL_RANGE_SEL_BIT  0
 #define BMI160_ACCEL_RANGE_SEL_LEN  4
 
-#define BMI160_CMD_START_FOC        0x03
-#define BMI160_CMD_ACC_MODE_NORMAL  0x11
-#define BMI160_CMD_GYR_MODE_NORMAL  0x15
-#define BMI160_CMD_FIFO_FLUSH       0xB0
-#define BMI160_CMD_INT_RESET        0xB1
-#define BMI160_CMD_STEP_CNT_CLR     0xB2
-#define BMI160_CMD_SOFT_RESET       0xB6
+#define BMI160_CMD_START_FOC         0x03
+#define BMI160_CMD_ACC_MODE_SUSPEND  0x10
+#define BMI160_CMD_ACC_MODE_NORMAL   0x11
+#define BMI160_CMD_ACC_MODE_LOWPOWER 0x12
+#define BMI160_CMD_GYR_MODE_SUSPEND  0x14
+#define BMI160_CMD_GYR_MODE_NORMAL   0x15
+#define BMI160_CMD_FIFO_FLUSH        0xB0
+#define BMI160_CMD_INT_RESET         0xB1
+#define BMI160_CMD_STEP_CNT_CLR      0xB2
+#define BMI160_CMD_SOFT_RESET        0xB6
 
 #define BMI160_RA_CMD               0x7E
 
@@ -470,6 +473,9 @@ class BMI160Class {
     public:
         void initialize();
         bool testConnection();
+
+        void setGyroPowerMode(bool suspend);
+        void setAccelPowerMode(bool suspend);
 
         uint8_t getGyroRate();
         void setGyroRate(uint8_t rate);

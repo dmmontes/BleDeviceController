@@ -36,9 +36,11 @@ void setPairingResult(bool paired)
 BluetoothState::BluetoothState(IContext &context, Ble::IBleController &bleController)
     : IState{context},
       bleController_{bleController},
-      bluetoothConnectionStateMachine_{BLUETOOTH_CONFIGURATION_PARAMS}
+      screen_{nullptr},
+      bluetoothConnectionStateMachine_{BLUETOOTH_CONFIGURATION_PARAMS, screen_}
 {
     LOG_DEBUG("BluetoothState::BluetoothState()");
+    deviceScreen_ = (Screen **)&screen_;
     bleController_.setPinCallbacksParameters(&setPinText, &setPin, &setPairingResult, 33, 32);
 }
 

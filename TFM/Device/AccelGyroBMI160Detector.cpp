@@ -22,14 +22,37 @@ namespace Detector
         LOG_DEBUG("Initializing IMU device...done.");
     }
 
+    void AccelGyroBMI160Detector::setDetectionType(IDetector::DetectionType detectionType)
+    {
+        LOG_DEBUG(String("AccelGyroBMI160Detector::setDetectionType() detectionType: ") +
+                  String(static_cast<uint8_t>(detectionType)));
+        detectionType_ = detectionType;
+        switch (detectionType_)
+        {
+        case IDetector::DetectionType::QUALITY:
+        case IDetector::DetectionType::NORMAL:
+            BMI160.setGyroPowerMode(false);
+            BMI160.setAccelPowerMode(false);
+            break;
+        case IDetector::DetectionType::LOW_POWER:
+        case IDetector::DetectionType::SUSPEND:
+            BMI160.setGyroPowerMode(true);
+            BMI160.setAccelPowerMode(true);
+            break;
+        default:
+            LOG_WARNING("AccelGyroBMI160Detector::setDetectionType() unknown DetectionType");
+            break;
+        }
+    }
+
     bool AccelGyroBMI160Detector::checkAction(IAction *action)
     {
         LOG_DEBUG("AccelGyroBMI160Detector::checkAction()");
 
-        // Check if device is connected
-        if (!connected_)
+        // Check if device is connected or in low power mode
+        if (!connected_ || detectionType_ == IDetector::DetectionType::LOW_POWER)
         {
-            LOG_WARNING("AccelGyroBMI160Detector::checkAction() sensor not connected");
+            LOG_DEBUG("AccelGyroBMI160Detector::checkAction() sensor not connected or in low power mode");
             return false;
         }
 

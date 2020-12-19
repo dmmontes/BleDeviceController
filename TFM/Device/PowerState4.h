@@ -23,11 +23,7 @@ public:
     virtual void detectionResult(bool detectedAction) override;
 
 private:
-    const uint8_t blueLed_;     ///< Blue led that will blink when enter in this state
-    const uint8_t greenLed_;    ///< Green led that will blink when enter in this state
-    const uint16_t brightness_; ///< Brightness of the led
-    bool activated_;            ///< Indicates if blink is activated
-    const uint32_t delayTime_;  ///< Delay time for each detected action in order to save power
+    const uint32_t delayTime_; ///< Delay time for each detected action in order to save power
 };
 
 #endif //POWER_STATE_4

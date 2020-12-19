@@ -17,8 +17,10 @@ namespace Detector
          */
         enum class DetectionType
         {
-            NORMAL, // Normal detection, use of simple functions, linears, etc
-            QUALITY // Quality detection, complex funcion, polynomials,
+            QUALITY,   // Quality detection, complex funcion, polynomials
+            NORMAL,    // Normal detection, use of simple functions, linears, etc
+            LOW_POWER, // Low Power Mode
+            SUSPEND    // Suspend mode
         };
 
         /**

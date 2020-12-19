@@ -35,6 +35,9 @@ public:
     virtual void changeState(PowerState newState) = 0;
 };
 
+// Function to notify changes in power state
+typedef void (*PowerStateChangedFxn)(IPowerStateMachine::PowerState newState);
+
 /**
  * @brief Represents the state machine of power consumption
  */
@@ -43,8 +46,10 @@ class PowerStateMachine : public IPowerStateMachine
 public:
     /**
      * @brief Construct a new PowerStateMachine object
+     * 
+     * @param powerStateChanged Function to notify power state changed
      */
-    PowerStateMachine();
+    PowerStateMachine(PowerStateChangedFxn powerStateChangedFxn);
 
     /**
      * @brief Destroy the PowerStateMachine object
@@ -62,7 +67,8 @@ public:
     void detectionResult(bool detectedAction);
 
 private:
-    IPowerState *powerState_; ///< State of the power consumption
+    IPowerState *powerState_;                   ///< State of the power consumption
+    PowerStateChangedFxn powerStateChangedFxn_; ///< Function to notify power state changed
 };
 
 #endif //POWER_STATE_MACHINE

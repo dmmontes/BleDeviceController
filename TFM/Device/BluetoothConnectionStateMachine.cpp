@@ -8,8 +8,8 @@
 #include "BluetoothConnectionStateSearching.h"
 
 BluetoothConnectionStateMachine::BluetoothConnectionStateMachine(
-    IBluetoothConnectionState::ConfigurationParams &configurationParams)
-    : connectionState_{nullptr}, screen_{nullptr}, configurationParams_{configurationParams}
+    IBluetoothConnectionState::ConfigurationParams &configurationParams, BluetoothScreen *screen)
+    : connectionState_{nullptr}, screen_{screen}, configurationParams_{configurationParams}
 {
     LOG_DEBUG("BluetoothConnectionStateMachine::BluetoothConnectionStateMachine()");
     changeState(IBluetoothConnectionStateMachine::ConnectionState::SEARCHING, screen_);

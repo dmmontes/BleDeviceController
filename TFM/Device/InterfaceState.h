@@ -18,6 +18,11 @@ public:
      */
     InterfaceState(IContext &context);
 
+    /**
+     * @brief Destroy the Interface State object
+     */
+    ~InterfaceState();
+
 protected:
     ///< Implementation of virtual methods from IState
     virtual void processAction(const IAction::ActionData &actionData) override;
@@ -31,8 +36,8 @@ private:
      */
     void selectedOption(uint8_t selectedOption);
 
-    InterfaceScreen screen_;  ///< Screen of the device. Draw in the display a menu of options
-    bool gamepadMode_{false}; ///< Indicates if gamepad mode has been selected
+    InterfaceScreen *screen_; ///< Screen of the device. Draw in the display a menu of options
+    bool gamepadMode_;        ///< Indicates if gamepad mode has been selected
 };
 
 #endif //INTERFACE_STATE

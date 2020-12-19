@@ -21,6 +21,7 @@ namespace Detector
         FSRDetector(unsigned long timeBetweenDetections = 0);
 
         ///< Implementation of virtual methods from IDetector
+        virtual void setDetectionType(IDetector::DetectionType detectionType) override;
         virtual bool checkAction(IAction *action) override;
 
     protected:
@@ -45,6 +46,8 @@ namespace Detector
     private:
         const uint8_t fsr1Pin_ = 27; // the number of the FSR 1 pin
         const uint8_t fsr2Pin_ = 28; // the number of the FSR 2 pin
+
+        IDetector::DetectionType detectionType_{IDetector::DetectionType::QUALITY}; ///< Type of detection
     };
 
 } // namespace Detector

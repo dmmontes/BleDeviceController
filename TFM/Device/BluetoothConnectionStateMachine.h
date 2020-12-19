@@ -47,8 +47,10 @@ public:
      * @brief Construct a new BluetoothConnectionStateMachine object
      * 
      * @param configurationParams Parameters to configure a bluetooth connection 
+     * @param screen pointer to the actual screen
      */
-    BluetoothConnectionStateMachine(IBluetoothConnectionState::ConfigurationParams &configurationParams);
+    BluetoothConnectionStateMachine(IBluetoothConnectionState::ConfigurationParams &configurationParams,
+                                    BluetoothScreen *screen);
 
     /**
      * @brief Destroy the BluetoothConnectionStateMachine object

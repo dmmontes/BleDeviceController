@@ -35,6 +35,7 @@ protected:
     Ble::IBleController &bleController_; ///< Controller of Ble connection
 
 private:
+    BluetoothScreen *screen_;                                         ///< Pointer to bluetooth screen
     BluetoothConnectionStateMachine bluetoothConnectionStateMachine_; ///< State machine of bluetooth connection
 };
 

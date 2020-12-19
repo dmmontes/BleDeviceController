@@ -19,12 +19,15 @@ namespace Detector
         LOG_DEBUG(String("MouseJoystickDetector::setDetectionType() detectionType: ") + String(static_cast<uint8_t>(detectionType)));
         switch (detectionType)
         {
-        case IDetector::DetectionType::NORMAL:
-            mapAxisToCursor_ = &MouseJoystickDetector::linearMapAxisToCursor;
-            break;
         case IDetector::DetectionType::QUALITY:
             mapAxisToCursor_ = &MouseJoystickDetector::PolyMapAxisToCursor;
             break;
+        case IDetector::DetectionType::NORMAL:
+        case IDetector::DetectionType::LOW_POWER:
+        case IDetector::DetectionType::SUSPEND:
+            mapAxisToCursor_ = &MouseJoystickDetector::linearMapAxisToCursor;
+            break;
+
         default:
             LOG_WARNING("MouseJoystickDetector::setDetectionType() unknown DetectionType");
             break;

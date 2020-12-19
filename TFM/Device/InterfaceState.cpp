@@ -20,12 +20,13 @@ void callbackSelectedOption(uint8_t selectedOption)
 }
 
 InterfaceState::InterfaceState(IContext &context)
-    : IState(context)
+    : IState{context}, screen_{new InterfaceScreen{}}, gamepadMode_{false}
 {
     LOG_DEBUG("InterfaceState::InterfaceState()");
+    deviceScreen_ = (Screen **)&screen_;
 
     // Draw initial screen
-    screen_.drawNewScreen(CONTROL_MODE_TITLE, CONTROL_MODE_OPTIONS, NUMBER_OF_OPTIONS, &callbackSelectedOption);
+    screen_->drawNewScreen(CONTROL_MODE_TITLE, CONTROL_MODE_OPTIONS, NUMBER_OF_OPTIONS, &callbackSelectedOption);
 
     // Add interface detectors
     const size_t numDetectors{2};
@@ -33,11 +34,17 @@ InterfaceState::InterfaceState(IContext &context)
     context_.setDetectors(detectors, numDetectors);
 }
 
+InterfaceState::~InterfaceState()
+{
+    LOG_DEBUG("InterfaceState::~InterfaceState()");
+    delete screen_;
+}
+
 void InterfaceState::processAction(const IAction::ActionData &actionData)
 {
     LOG_DEBUG("InterfaceState::processAction()");
 
-    screen_.draw(*actionData.data);
+    screen_->draw(*actionData.data);
     if (SELECTED_OPTION != UNKNOWN_OPTION)
     {
         selectedOption(SELECTED_OPTION);
@@ -71,7 +78,7 @@ void InterfaceState::selectedOption(uint8_t selectedOption)
         if (!gamepadMode_)
         {
             // Draw gamepads screen
-            screen_.drawNewScreen(GAMEPAD_MODE_TITLE, GAMEPAD_MODE_OPTIONS, NUMBER_OF_OPTIONS, &callbackSelectedOption);
+            screen_->drawNewScreen(GAMEPAD_MODE_TITLE, GAMEPAD_MODE_OPTIONS, NUMBER_OF_OPTIONS, &callbackSelectedOption);
             gamepadMode_ = true;
         }
         else

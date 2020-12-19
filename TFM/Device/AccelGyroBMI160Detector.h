@@ -21,6 +21,7 @@ namespace Detector
         AccelGyroBMI160Detector(unsigned long timeBetweenDetections = 0);
 
         ///< Implementation of virtual methods from IDetector
+        virtual void setDetectionType(IDetector::DetectionType detectionType) override;
         virtual bool checkAction(IAction *action) override;
 
     protected:
@@ -51,6 +52,8 @@ namespace Detector
         bool connected_{false};                ///< Indicates if sensor is connected or not
         const uint16_t maxSensorValue_{32768}; ///< Maximum value read by sensor
         const uint16_t maxMappedValue_{512};   ///< Maximos value mapped to detect movements
+
+        IDetector::DetectionType detectionType_{IDetector::DetectionType::QUALITY}; ///< Type of detection
     };
 
 } // namespace Detector

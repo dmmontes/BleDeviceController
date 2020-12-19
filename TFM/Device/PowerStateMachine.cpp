@@ -7,8 +7,8 @@
 #include "PowerState3.h"
 #include "PowerState4.h"
 
-PowerStateMachine::PowerStateMachine()
-    : powerState_{nullptr}
+PowerStateMachine::PowerStateMachine(PowerStateChangedFxn powerStateChangedFxn)
+    : powerState_{nullptr}, powerStateChangedFxn_{powerStateChangedFxn}
 {
     LOG_DEBUG("PowerStateMachine::PowerStateMachine()");
     changeState(IPowerStateMachine::PowerState::PW1);
@@ -22,7 +22,7 @@ PowerStateMachine::~PowerStateMachine()
 
 void PowerStateMachine::changeState(IPowerStateMachine::PowerState newState)
 {
-    LOG_DEBUG(String("PowerStateMachine::changeState() newState: ") +
+    LOG_ERROR(String("PowerStateMachine::changeState() newState: ") +
               String(static_cast<uint8_t>(newState) + 1));
 
     delete powerState_;
@@ -44,6 +44,7 @@ void PowerStateMachine::changeState(IPowerStateMachine::PowerState newState)
         LOG_DEBUG("PowerStateMachine::changeState() Unrecognized state");
         break;
     }
+    powerStateChangedFxn_(newState);
 }
 
 void PowerStateMachine::detectionResult(bool detectedAction)

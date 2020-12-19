@@ -6,6 +6,7 @@
 #include "IContext.h"
 #include "IAction.h"
 #include "PowerStateMachine.h"
+#include "Screen.h"
 
 /**
  * @brief Represents a state of the device. 
@@ -54,7 +55,8 @@ protected:
      */
     virtual bool isDetectionEnabled() = 0;
 
-    IContext &context_; ///< Pointer to device's context
+    IContext &context_;              ///< Pointer to device's context
+    Screen **deviceScreen_{nullptr}; ///< Screen of the device
 
 private:
     PowerStateMachine powerStateMachine_;       ///< State machiche of power consumption

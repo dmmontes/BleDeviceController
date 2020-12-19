@@ -10,7 +10,7 @@
  */
 class Screen
 {
-protected:
+public:
     /**
      * @brief Construct a new Screen object 
      */
@@ -61,6 +61,16 @@ protected:
     };
 
     /**
+     * @brief Turn on the screen 
+     */
+    void turnOn();
+
+    /**
+     * @brief Turn off the screen 
+     */
+    void turnOff();
+
+    /**
      * @brief Draw a Message in the screen
      * 
      * @param message Message to be drawn
@@ -97,6 +107,7 @@ protected:
      */
     void drawImage(const Image &image);
 
+protected:
     const uint8_t resetPin_;       ///< Pin used for reset action
     const uint8_t dataCommandPin_; ///< Pin used for data command
     const uint8_t chipSelectPin_;  ///< Pin used for chip select
