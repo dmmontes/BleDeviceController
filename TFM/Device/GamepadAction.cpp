@@ -88,6 +88,8 @@ String GamepadAction::translateKey(Key key)
         return "C";
     case GamepadAction::Key::D:
         return "D";
+    case GamepadAction::Key::P:
+        return "P";
     case GamepadAction::Key::S:
         return "S";
     case GamepadAction::Key::W:

@@ -4,7 +4,7 @@
 
 #include "Energia.h"
 #include "PowerStateMachine.h"
-#include "ti\devices\msp432p4xx\driverlib\pcm.h"
+#include "ti/devices/msp432p4xx/driverlib/pcm.h"
 
 const uint8_t BUTTON1_PIN{33};
 const uint8_t BUTTON2_PIN{32};

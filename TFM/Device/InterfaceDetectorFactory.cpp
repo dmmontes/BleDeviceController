@@ -4,6 +4,7 @@
 
 #include "InterfaceButtonsDetector.h"
 #include "InterfaceJoystickDetector.h"
+#include "InterfaceVoiceDetector.h"
 
 namespace Detector
 {
@@ -18,6 +19,12 @@ namespace Detector
     {
         LOG_DEBUG("InterfaceDetectorFactory::createButtonDetector()");
         return new InterfaceJoystickDetector();
+    }
+
+    DetectorPtr InterfaceDetectorFactory::createVoiceDetector()
+    {
+        LOG_DEBUG("InterfaceDetectorFactory::createVoiceDetector()");
+        return new InterfaceVoiceDetector();
     }
 
 } // namespace Detector

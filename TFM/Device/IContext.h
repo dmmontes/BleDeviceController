@@ -19,7 +19,8 @@ public:
         JOYSTICK,      ///< Joystick Detector
         ACCELEROMETER, ///< Accelerometer Detector
         ACCEL_GYRO,    ///< Accelerometer-Gyroscope Detector
-        FSR            ///< Force Sensitive Resistor Detector
+        FSR,           ///< Force Sensitive Resistor Detector
+        VOICE          ///< Voice Detector
     };
 
     /**

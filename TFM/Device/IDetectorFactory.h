@@ -21,7 +21,8 @@ namespace Detector
             JOYSTICK,      ///< Joystick detecktor
             ACCELEROMETER, ///< Accelerometer detector
             ACCEL_GYRO,    ///< Accelerometer-Gyroscope detector
-            FSR            ///< Force Sensitive Resistive detector
+            FSR,           ///< Force Sensitive Resistor Detector
+            VOICE          ///< Voice Detector
         };
 
         /**
@@ -85,6 +86,13 @@ namespace Detector
          * @return DetectorPtr Pointer to Force Sensitive Resistor Detector object
          */
         virtual DetectorPtr createFSRDetector() { return nullptr; };
+
+        /**
+         * @brief Create a Voice Detector object
+         * 
+         * @return DetectorPtr Pointer to Voice Detector object
+         */
+        virtual DetectorPtr createVoiceDetector() { return nullptr; };
 
     private:
         DetectorPtr *detectors_{nullptr}; ///< Vector of pointers to IDetector

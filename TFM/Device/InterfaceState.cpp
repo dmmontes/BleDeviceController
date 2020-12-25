@@ -29,8 +29,9 @@ InterfaceState::InterfaceState(IContext &context)
     screen_->drawNewScreen(CONTROL_MODE_TITLE, CONTROL_MODE_OPTIONS, NUMBER_OF_OPTIONS, &callbackSelectedOption);
 
     // Add interface detectors
-    const size_t numDetectors{2};
-    IContext::DetectorType detectors[numDetectors]{IContext::DetectorType::BUTTON, IContext::DetectorType::JOYSTICK};
+    const size_t numDetectors{3};
+    IContext::DetectorType detectors[numDetectors]{IContext::DetectorType::BUTTON, IContext::DetectorType::JOYSTICK,
+                                                   IContext::DetectorType::VOICE};
     context_.setDetectors(detectors, numDetectors);
 }
 

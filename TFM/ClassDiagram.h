@@ -386,6 +386,33 @@ package Energia_BMI160_Library  <<Folder>> {
 }
 AccelGyroDetector -- BMI160GenClass : use 
 
+class VoiceDetector
+{
+
+}
+IDetector <|-down- VoiceDetector
+
+class VoiceInterface
+{
+
+}
+VoiceDetector <|-down- VoiceInterface
+
+class VoiceGamepad
+{
+
+}
+VoiceDetector <|-down- VoiceGamepad
+GamepadDetector <|-up- VoiceGamepad
+
+package ArduinoFFT  <<Folder>> {
+
+    class ArduinoFFT
+    {
+        + void Windowing(...)
+    }
+}
+VoiceDetector -- ArduinoFFT : use 
 
 enum StateType
 {
@@ -439,6 +466,9 @@ enum InterfaceMoves
 
 class InterfaceAction
 {
+    + void moveUp()
+    + void moveDown()
+    + void selectOption()
 }
 IAction <|-down- InterfaceAction
 InterfaceAction -- InterfaceMoves
@@ -459,6 +489,7 @@ enum Key
   A
   D
   C
+  P
   SPACE
   UP
   DOWN

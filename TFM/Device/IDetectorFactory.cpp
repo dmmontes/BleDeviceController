@@ -48,6 +48,10 @@ namespace Detector
                 detectors_[i] = createFSRDetector();
                 break;
 
+            case DetectorType::VOICE:
+                detectors_[i] = createVoiceDetector();
+                break;
+
             default:
                 LOG_WARNING("IDetectorFactory::createDetectors() Unknown specified type");
                 break;

@@ -19,6 +19,7 @@ public:
         A = 0x04,       ///< Represents key "A"
         C = 0x06,       ///< Represents key "C"
         D = 0x07,       ///< Represents key "D"
+        P = 0x13,       ///< Represents key "P"
         S = 0x16,       ///< Represents key "S"
         W = 0x1a,       ///< Represents key "W"
         SPACE = 0x2C,   ///< Represents key "SPACE"

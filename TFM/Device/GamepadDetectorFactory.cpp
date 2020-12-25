@@ -7,6 +7,7 @@
 #include "GamepadAccelerometerDetector.h"
 #include "GamepadAccelGyroBMI160Detector.h"
 #include "GamepadFSRDetector.h"
+#include "GamepadVoiceDetector.h"
 
 namespace Detector
 {
@@ -39,6 +40,12 @@ namespace Detector
     {
         LOG_DEBUG("GamepadDetectorFactory::createFSRDetector()");
         return new GamepadFSRDetector();
+    }
+
+    DetectorPtr GamepadDetectorFactory::createVoiceDetector()
+    {
+        LOG_DEBUG("GamepadDetectorFactory::createVoiceDetector()");
+        return new GamepadVoiceDetector();
     }
 
 } // namespace Detector
